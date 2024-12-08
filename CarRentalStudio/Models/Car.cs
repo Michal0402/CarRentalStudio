@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarRentalStudio.Models
 {
     public class Car
     {
-        [Key]
+       [Key]
         public int Id { get; set; } 
 
         [Required]
@@ -26,9 +27,12 @@ namespace CarRentalStudio.Models
         public int HorsePower { get; set; }
 
         [Required]
+        [Precision(18, 2)]
         public decimal DailyRate { get; set; } 
 
-        public bool IsAvailable { get; set; } 
+        public bool IsAvailable { get; set; }
+
+        public string Image { get; set; }
 
         public ICollection<Rental> Rentals { get; set; } 
     }
