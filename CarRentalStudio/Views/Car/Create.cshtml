@@ -1,5 +1,15 @@
 ﻿@model CarRentalStudio.Models.Car
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <ul>
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <li>@error.ErrorMessage</li>
+        }
+    </ul>
+}
+
 @{
     ViewData["Title"] = "Create";
 }
@@ -61,6 +71,10 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.0/jquery.validate.unobtrusive.min.js"></script>
+
     </div>
 </div>
 
