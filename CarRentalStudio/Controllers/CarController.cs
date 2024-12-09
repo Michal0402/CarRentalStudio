@@ -19,6 +19,22 @@ namespace CarRentalStudio.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> CarsMainPanel()
+        {
+            var cars = await _context.Cars.ToListAsync();
+            return View(cars);
+        }
+
+        public async Task<IActionResult> Description(int id)
+        {
+            var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+            return View(car);
+        }
+
         // GET: Car
         public async Task<IActionResult> Index()
         {
