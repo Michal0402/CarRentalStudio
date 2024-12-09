@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using CarRentalStudio.Models;
 using CarRentalStudio.Data;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CarRentalStudio.Controllers
 {
@@ -14,6 +15,13 @@ namespace CarRentalStudio.Controllers
         public AdminController(ApplicationDbContext context)
         {
             _context = context;
+        }
+        // Ta metoda ustawia ViewData["IsAdmin"] dla wszystkich akcji w tym kontrolerze
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            // Sprawdza, czy użytkownik ma rolę "Administrator"
+            ViewData["IsAdmin"] = User.IsInRole("Administrator");
+            base.OnActionExecuting(context);
         }
         public IActionResult Index()
         {
