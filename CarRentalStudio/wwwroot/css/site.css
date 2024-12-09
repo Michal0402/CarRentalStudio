@@ -20,3 +20,97 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+
+.cars-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.car-tile {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.car-tile:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+
+.car-image {
+    width: 100%;
+    border-radius: 10px;
+    height: 180px;
+    object-fit: cover;
+}
+
+h3 {
+    font-size: 20px;
+    margin: 15px 0;
+    color: #333;
+}
+
+.price {
+    font-size: 18px;
+    color: #e63946;
+    font-weight: bold;
+}
+
+.info {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.car-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.detail {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+
+    .detail img {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+
+.details-button {
+    background-color: #a8e063;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .details-button:hover {
+        background-color: #7db44c;
+        transform: scale(1.1);
+    }

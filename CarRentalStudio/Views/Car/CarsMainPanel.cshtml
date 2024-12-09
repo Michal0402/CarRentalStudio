@@ -1,0 +1,23 @@
+﻿@model IEnumerable<CarRentalStudio.Models.Car>
+
+@{
+    ViewData["Title"] = "CarsMainPanel";
+}
+
+<div class="cars-container">
+   @foreach (var car in Model)
+   {
+       <div class="car-tile">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsqG1U_Je1iukFq-eXZO-rjy2GaDsAMkzlzQ&s" alt="Ferrari 296 GTB" class="car-image">
+           <h3>@car.Brand @car.Model</h3>
+           <p class="price">od <span class="price-value">@car.DailyRate zł</span></p>
+           <div class="car-details">
+               <div class="detail"><img src="icons/speed.svg" alt=""> 2,9 s do 100km/h</div>
+               <div class="detail"><img src="icons/gear.svg" alt=""> Auto</div>
+               <div class="detail"><img src="icons/power.svg" alt="">@car.HorsePower</div>
+               <div class="detail"><img src="icons/seats.svg" alt="">@car.Mileage</div>
+           </div>
+           <a class="details-button" href="@Url.Action("Description", "Car", new { id = car.Id })">Szczegóły</a>
+       </div>
+   }
+</div>
