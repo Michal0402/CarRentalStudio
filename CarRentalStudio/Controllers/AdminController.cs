@@ -36,7 +36,8 @@ namespace CarRentalStudio.Controllers
         // Dodanie nowego samochodu (GET)
         public IActionResult CreateCar()
         {
-            return View();
+            Console.WriteLine("Renderowanie widoku _CarCreate.");
+            return PartialView("_CarCreate");
         }
         // Dodanie nowego samochodu (POST)
         [HttpPost]
@@ -45,10 +46,10 @@ namespace CarRentalStudio.Controllers
             if (ModelState.IsValid)
             {
                 _context.Cars.Add(car);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Cars));
+                var cars = await _context.Cars.ToListAsync();
+                return PartialView("_CarList", cars);
             }
-            return View(car);
+            return PartialView("_CarCreate", car);
         }
         // Edycja samochodu (GET)
         public async Task<IActionResult> EditCar(int id)
@@ -58,7 +59,7 @@ namespace CarRentalStudio.Controllers
             {
                 return NotFound();
             }
-            return View(car);
+            return PartialView("_CarEdit", car);
         }
         // Edycja samochodu (POST)
         [HttpPost]
@@ -68,9 +69,10 @@ namespace CarRentalStudio.Controllers
             {
                 _context.Cars.Update(car);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Cars));
+                var cars = await _context.Cars.ToListAsync();
+                return PartialView("_CarList", cars);
             }
-            return View(car);
+            return PartialView("_CarEdit", car);
         }
 
         // Usunięcie samochodu
@@ -83,7 +85,9 @@ namespace CarRentalStudio.Controllers
             }
             _context.Cars.Remove(car);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Cars));
+
+            var cars = await _context.Cars.ToListAsync();
+            return PartialView("_CarList", cars);
         }
         // wyświetlenie użytkowników
         public async Task<IActionResult> Clients()
