@@ -16,6 +16,13 @@ namespace CarRentalStudio.Models
         public string PasswordHash { get; set; } 
 
         [Required]
-        public string FullName { get; set; } 
+        public string FullName { get; set; }
+
+        // Do konsultacji
+       /* public class Admin : IdentityUser
+        {
+            [Required]
+            public string FullName { get; set; }
+        }*/
     }
 }

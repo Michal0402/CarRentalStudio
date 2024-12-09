@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="manage-sections">
+    <!-- Przycisk do zarządzania samochodami -->
+    <button class="btn btn-primary" id="manageCarsBtn">Manage Cars</button>
+
+    <!-- Przycisk do zarządzania użytkownikami -->
+    <button class="btn btn-primary" id="manageUsersBtn">Manage Users</button>
+
+    <!-- Przycisk do zarządzania rezerwacjami -->
+    <button class="btn btn-primary" id="manageRentalsBtn">Manage Rentals</button>
+</div>
+
+<!-- Sekcja na dane, które się zmieniają po kliknięciu w jeden z przycisków -->
+<div id="dataContainer">
+    <!-- Tutaj będą wyświetlane odpowiednie listy (np. Cars, Users, Rentals) -->
+</div>
+
+@section Scripts {
+    <script>
+        // Zdarzenia kliknięcia dla przycisków
+        $(document).ready(function () {
+            // Załaduj listę samochodów
+            $('#manageCarsBtn').click(function () {
+                $('#dataContainer').load('@Url.Action("Cars", "Admin")');
+            });
+
+            // Załaduj listę użytkowników
+            $('#manageUsersBtn').click(function () {
+                $('#dataContainer').load('@Url.Action("Clients", "Admin")');
+            });
+
+            // Załaduj listę rezerwacji
+            $('#manageRentalsBtn').click(function () {
+                $('#dataContainer').load('@Url.Action("Rentals", "Admin")');
+            });
+        });
+    </script>
+}
+

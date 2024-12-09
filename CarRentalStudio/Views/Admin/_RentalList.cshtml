@@ -1,0 +1,29 @@
+﻿@model IEnumerable<CarRentalStudio.Models.Rental>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Car</th>
+            <th>Client</th>
+            <th>Rental Date</th>
+            <th>Manage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rental in Model)
+        {
+            <tr>
+                <td>@rental.Id</td>
+                <td>@rental.Car.Brand @rental.Car.Model</td>
+                <td>@rental.Client.FullName</td>
+                <td>@rental.RentalStart.ToString("yyyy-MM-dd")</td>
+                <td>@rental.RentalEnd.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <a asp-action="EditRental" asp-route-id="@rental.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="DeleteRental" asp-route-id="@rental.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

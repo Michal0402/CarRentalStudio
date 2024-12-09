@@ -6,8 +6,8 @@ namespace CarRentalStudio.Models
     public class Car
     {
        [Key]
-        public int Id { get; set; } 
-
+        public int Id { get; set; }
+       
         [Required]
         public string Brand { get; set; } 
 
@@ -28,12 +28,16 @@ namespace CarRentalStudio.Models
 
         [Required]
         [Precision(18, 2)]
-        public decimal DailyRate { get; set; } 
-
+        public decimal DailyRate { get; set; }
         public bool IsAvailable { get; set; }
-
         public string Image { get; set; }
+        public ICollection<Rental> Rentals { get; set; }
 
-        public ICollection<Rental> Rentals { get; set; } 
+        // Konstruktor
+        public Car()
+        {
+            Rentals = new List<Rental>();
+        }
+
     }
 }
