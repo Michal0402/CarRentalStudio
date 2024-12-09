@@ -1,0 +1,29 @@
+﻿@model IEnumerable<CarRentalStudio.Models.Car>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Manage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.Id</td>
+                <td>@car.Brand</td>
+                <td>@car.Model</td>
+                <td>@car.Year</td>
+                <td>
+                    <a asp-action="EditCar" asp-route-id="@car.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="DeleteCar" asp-route-id="@car.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
