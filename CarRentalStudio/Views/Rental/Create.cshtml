@@ -3,6 +3,15 @@
 @{
     ViewData["Title"] = "Create";
 }
+@if (!ViewData.ModelState.IsValid)
+{
+    <ul>
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <li>@error.ErrorMessage</li>
+        }
+    </ul>
+}
 
 <h1>Create</h1>
 

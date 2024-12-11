@@ -29,6 +29,7 @@ namespace CarRentalStudio.Models
         [Precision(18, 2)]
         public decimal Price { get; set; }
 
-        public bool IsActive => DateTime.Now < RentalEnd && DateTime.Now >= RentalStart; 
+        public bool IsActive => DateTime.Now < RentalEnd && DateTime.Now >= RentalStart;
+
     }
 }

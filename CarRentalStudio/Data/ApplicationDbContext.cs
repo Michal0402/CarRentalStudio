@@ -9,8 +9,6 @@ namespace CarRentalStudio.Data
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Car> Cars { get; set; }
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<Admin> Admins { get; set; }
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Rating> Rating { get; set; }
