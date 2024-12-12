@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "OrderForm";
+}
+
+<h2>Formularz Zamówienia</h2>
+
+<form method="post" action="@Url.Action("ConfirmOrder", "Rental")">
+    <input type="hidden" name="CarId" value="@Model.CarId" />
+    <input type="hidden" name="StartDate" value="@Model.StartDate" />
+    <input type="hidden" name="EndDate" value="@Model.EndDate" />
+
+    <p>Samochód: <strong>@Model.CarBrand @Model.CarModel</strong></p>
+    <p>Data od: <strong>@Model.StartDate.ToShortDateString()</strong></p>
+    <p>Data do: <strong>@Model.EndDate.ToShortDateString()</strong></p>
+    <p>Całkowity koszt: <strong>@Model.TotalCost PLN</strong></p>
+
+    <label>Imię:</label>
+    <input type="text" name="ClientName" required />
+
+    <label>Email:</label>
+    <input type="email" name="ClientEmail" required />
+
+    <button type="submit" class="btn btn-success">Potwierdź Zamówienie</button>
+</form>
+

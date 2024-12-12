@@ -19,8 +19,8 @@ namespace CarRentalStudio.Controllers
             _context = context;
         }
 
-        // GET: Rental
-        public async Task<IActionResult> Index()
+    // GET: Rental
+    public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Rentals.Include(r => r.Car).Include(r => r.Client);
             return View(await applicationDbContext.ToListAsync());

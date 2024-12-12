@@ -1,0 +1,11 @@
+﻿@model List<Rental>
+@{
+    ViewData["Title"] = "Kalendarz Rezerwacji";
+    DateTime currentDate = DateTime.Now;
+    int daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+}
+
+<h2>Kalendarz dla @ViewBag.CarName</h2>
+
+
+
