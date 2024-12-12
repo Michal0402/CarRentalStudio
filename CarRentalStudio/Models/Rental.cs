@@ -12,11 +12,11 @@ namespace CarRentalStudio.Models
 
         [ForeignKey("Client")]
         public string ClientId { get; set; }
-        public Client Client { get; set; }
+        public IdentityUser? Client { get; set; }
 
         [ForeignKey("Car")]
         public int CarId { get; set; }
-        public Car Car { get; set; } 
+        public Car? Car { get; set; } 
 
         [Required]
         public DateTime RentalStart { get; set; } 

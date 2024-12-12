@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarRentalStudio.Data;
 using CarRentalStudio.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarRentalStudio.Controllers
 {
     public class RentalController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public RentalController(ApplicationDbContext context)
+        public RentalController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Rental
@@ -47,7 +50,7 @@ namespace CarRentalStudio.Controllers
         }
 
         // GET: Rental/Create
-        public IActionResult Create()
+        public IActionResult Create(int clientId, int carId)
         {
             ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand");
             ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id");
@@ -63,6 +66,9 @@ namespace CarRentalStudio.Controllers
         {
             if (ModelState.IsValid)
             {
+                rental.Client = await _userManager.FindByIdAsync(rental.ClientId);
+                rental.Car = await _context.Cars.FindAsync(rental.CarId);
+
                 _context.Add(rental);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
