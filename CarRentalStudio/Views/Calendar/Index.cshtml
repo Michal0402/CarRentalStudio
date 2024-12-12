@@ -1,0 +1,76 @@
+﻿@model List<Calendar>
+@{
+    ViewBag.Title = "Dostępność samochodu";
+    int year = ViewBag.Year;
+    int month = ViewBag.Month;
+    var car = ViewBag.Car as Car;
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Dostępność samochodu - @car.Brand @car.Model</h2>
+    <h4 class="text-center">@month/@year</h4>
+
+    <table class="table table-bordered text-center mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th>Pn</th>
+                <th>Wt</th>
+                <th>Śr</th>
+                <th>Cz</th>
+                <th>Pt</th>
+                <th class="text-primary">Sb</th>
+                <th class="text-danger">Nd</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var firstDayOfMonth = new DateTime(year, month, 1);
+                int startDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
+                if (startDayOfWeek == 0) startDayOfWeek = 7;
+
+                int currentDay = 1;
+                int daysInMonth = DateTime.DaysInMonth(year, month);
+                bool started = false;
+
+                for (int week = 0; week < 6; week++)
+                {
+                    <tr>
+                        @for (int day = 1; day <= 7; day++)
+                        {
+                            if (!started && day == startDayOfWeek)
+                            {
+                                started = true;
+                            }
+
+                            if (started && currentDay <= daysInMonth)
+                            {
+                                var calendarDay = Model.FirstOrDefault(d => d.Date.Day == currentDay);
+
+                                <td class="@(calendarDay?.IsReserved ?? false ? "bg-danger text-white" : "bg-success text-white")">
+                                    <span>@currentDay</span>
+                                </td>
+                                currentDay++;
+                            }
+                            else
+                            {
+                                <td class="bg-light"></td>
+                            }
+                        }
+                    </tr>
+
+                    if (currentDay > daysInMonth)
+                    {
+                        break;
+                    }
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-3">
+        <a class="btn btn-primary" href="@Url.Action("CarAvailability", new { carId = car.Id, year = year, month = month - 1 })">Poprzedni miesiąc</a>
+        <a class="btn btn-primary" href="@Url.Action("CarAvailability", new { carId = car.Id, year = year, month = month + 1 })">Następny miesiąc</a>
+    </div>
+</div>
+
+
