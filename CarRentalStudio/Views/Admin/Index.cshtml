@@ -89,11 +89,47 @@
 
                 // Wysłanie formularza jako POST
                 $.post(form.attr('action'), form.serialize(), function (response) {
-                    // Po dodaniu samochodu, załaduj zaktualizowaną tabelę samochodów
+                    // Po dodaniu samochodu, załaduj zaktualizowaną tabelę użytkowników
                     $.get('@Url.Action("Users", "Admin")', function (data) {
-                        $('#dataContainer').html(data); // Załaduj listę samochodów po dodaniu
+                        $('#dataContainer').html(data); // Załaduj listę użytkowników po dodaniu
                     }).fail(function () {
                         alert("Failed to load updated user list.");
+                    });
+                }).fail(function (response) {
+                    // Jeśli formularz nie przeszedł walidacji, wyświetl błędy
+                    const errors = response.responseJSON;
+                    let errorMessages = '';
+                    for (const field in errors) {
+                        if (errors.hasOwnProperty(field)) {
+                            errorMessages += errors[field].join('<br/>');
+                        }
+                    }
+                    alert("There were errors:\n" + errorMessages);
+                });
+            });
+            // Obsługa kliknięcia w przycisk "Add Rental"
+             $(document).on('click', '#add-rental-link', function (e) {
+                e.preventDefault(); // Zapobiega przeładowaniu strony
+
+                // Wywołanie żądania GET do kontrolera Admin/CreateUser
+                $.get('@Url.Action("CreateRental", "Admin")', function (data) {
+                    $('#dataContainer').html(data); // Załaduj formularz do kontenera
+                }).fail(function () {
+                    alert("Failed to load the form. Please try again.");
+                });
+            });
+            // Obsługa wysyłania formularza dodawania użytkownika
+            $(document).on('submit', '#rentalCreateForm', function (e) {
+                e.preventDefault(); // Zapobiega przeładowaniu strony
+                const form = $(this);
+
+                // Wysłanie formularza jako POST
+                $.post(form.attr('action'), form.serialize(), function (response) {
+                    // Po dodaniu wypożyczenia, załaduj zaktualizowaną tabelę wypożyczeń
+                    $.get('@Url.Action("Rentals", "Admin")', function (data) {
+                        $('#dataContainer').html(data); // Załaduj listę wypożyczeń po dodaniu
+                    }).fail(function () {
+                        alert("Failed to load updated rental list.");
                     });
                 }).fail(function (response) {
                     // Jeśli formularz nie przeszedł walidacji, wyświetl błędy
@@ -158,6 +194,16 @@
                 alert("Failed to load the edit form. Please try again.");
             });
         });
+        $(document).on("submit", "#userEditForm", function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.post(form.attr("action"), form.serialize(), function (response) {
+                $("#dataContainer").html(response); // Załaduj zaktualizowaną listę
+            }).fail(function () {
+                alert("Failed to save changes. Please try again.");
+            });
+        });
         // Usuwanie użytkownika
         $(document).on("click", ".delete-user-link", function (e) {
             e.preventDefault();
@@ -171,6 +217,42 @@
                 $("#dataContainer").html(response); // Załaduj zaktualizowaną listę
             }).fail(function () {
                 alert("Failed to delete the user. Please try again.");
+            });
+        });
+        // Edycja wypożyczenia
+        $(document).on("click", ".edit-rental-link", function (e) {
+            e.preventDefault();
+            const url = $(this).attr("href");
+
+            $.get(url, function (data) {
+                $("#dataContainer").html(data);
+            }).fail(function () {
+                alert("Failed to load the edit form. Please try again.");
+            });
+        });
+        $(document).on("submit", "#rentalEditForm", function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.post(form.attr("action"), form.serialize(), function (response) {
+                $("#dataContainer").html(response); // Załaduj zaktualizowaną listę
+            }).fail(function () {
+                alert("Failed to save changes. Please try again.");
+            });
+        });
+        // Usuwanie wypożyczenia
+        $(document).on("click", ".delete-rental-link", function (e) {
+            e.preventDefault();
+            if (!confirm("Are you sure you want to delete this rental?")) {
+                return;
+            }
+
+            const url = $(this).attr("href");
+
+            $.post(url, function (response) {
+                $("#dataContainer").html(response); // Załaduj zaktualizowaną listę
+            }).fail(function () {
+                alert("Failed to delete the rental. Please try again.");
             });
         });
     </script>

@@ -1,0 +1,43 @@
+﻿@model CarRentalStudio.Models.Rental
+
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>Create</h1>
+
+<h4>Rental</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="rentalCreateForm" method="post" asp-action="CreateRental" asp-controller="Admin">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Client" class="control-label"></label>
+                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Car" class="control-label"></label>
+                <select asp-for="CarId" class="form-control" asp-items="ViewBag.CarId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RentalStart" class="control-label"></label>
+                <input asp-for="RentalStart" class="form-control" />
+                <span asp-validation-for="RentalStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RentalEnd" class="control-label"></label>
+                <input asp-for="RentalEnd" class="form-control" />
+                <span asp-validation-for="RentalEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

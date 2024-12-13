@@ -6,6 +6,7 @@ using CarRentalStudio.Models;
 using CarRentalStudio.Data;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CarRentalStudio.Controllers
 {
@@ -44,7 +45,6 @@ namespace CarRentalStudio.Controllers
         // Dodanie nowego samochodu (GET)
         public IActionResult CreateCar()
         {
-            Console.WriteLine("Renderowanie widoku _CarCreate.");
             return PartialView("_CarCreate");
         }
         // Dodanie nowego samochodu (POST)
@@ -242,44 +242,106 @@ namespace CarRentalStudio.Controllers
                 .ToListAsync();
             return PartialView("_RentalList", rentals);
         }
-        // Dodanie listy wypożyczeń (GET)
+        // Dodanie wypożyczenia (GET)
         public IActionResult CreateRental()
         {
-            return View();
+            ViewBag.ClientId = new SelectList(_userManager.Users.ToList(), "Id", "UserName");
+            ViewBag.CarId = new SelectList(_context.Cars.ToList(), "Id", "Brand");
+            return PartialView("_RentalCreate");
         }
-        // Dodanie listy wypożyczeń (POST)
+        // Dodanie wypożyczenia (POST)
         [HttpPost]
-        public async Task<IActionResult> CreateRental(Rental rental)
+        public async Task<IActionResult> Create([Bind("Id,ClientId,CarId,RentalStart,RentalEnd,Price")] Rental rental)
         {
             if (ModelState.IsValid)
             {
-                _context.Rentals.Add(rental);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Rentals));
+                rental.Client = await _userManager.FindByIdAsync(rental.ClientId);
+                rental.Car = await _context.Cars.FindAsync(rental.CarId);
+                if (rental.Client == null || rental.Car == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Client or Car selection.");
+                    return PartialView("_RentalCreate", rental);
+                }
+                _context.Add(rental);
+                var rentals = await _context.Rentals.Include(r => r.Client).Include(r => r.Car).ToListAsync();
+                return PartialView("_RentalList", rentals);
             }
-            return View(rental);
+            ViewBag.ClientId = new SelectList(_userManager.Users.ToList(), "Id", "UserName", rental.ClientId);
+            ViewBag.CarId = new SelectList(_context.Cars.ToList(), "Id", "Brand", rental.CarId);
+            return PartialView("_RentalList");
         }
-        // Edycja listy wypożyczeń (GET)
+        //Edytowanie wypożyczenia (GET)
         public async Task<IActionResult> EditRental(int id)
         {
-            var rental = await _context.Rentals.FindAsync(id);
+            // Znajdź wypożyczenie w bazie danych na podstawie jego Id
+            var rental = await _context.Rentals
+                .Include(r => r.Client)
+                .Include(r => r.Car)
+                .FirstOrDefaultAsync(r => r.Id == id);
             if (rental == null)
             {
-                return NotFound();
+                return NotFound(); // Zwróć błąd 404, jeśli wypożyczenie nie istnieje
             }
-            return View(rental);
+            // Przygotuj dane do wyświetlenia w formularzu
+            ViewBag.ClientId = new SelectList(_userManager.Users, "Id", "UserName", rental.ClientId);
+            ViewBag.CarId = new SelectList(_context.Cars, "Id", "Brand", rental.CarId);
+
+            return PartialView("_RentalEdit", rental); // Zwróć widok edycji
         }
-        // Edycja listy wypożyczeń (POST)
+        // Zapisanie zmian w wypożyczeniu (POST)
         [HttpPost]
-        public async Task<IActionResult> EditRental(Rental rental)
+        public async Task<IActionResult> EditRental(int id, [Bind("Id,ClientId,CarId,RentalStart,RentalEnd,Price")] Rental rental)
         {
+            if (id != rental.Id)
+            {
+                return BadRequest(); // Zwróć błąd 400, jeśli Id w modelu nie zgadza się z Id w URL
+            }
             if (ModelState.IsValid)
             {
-                _context.Rentals.Update(rental);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Rentals));
+                try
+                {
+                    // Znajdź istniejące wypożyczenie w bazie danych
+                    var existingRental = await _context.Rentals.FindAsync(id);
+
+                    if (existingRental == null)
+                    {
+                        return NotFound(); // Zwróć błąd 404, jeśli wypożyczenie nie istnieje
+                    }
+                    // Aktualizuj właściwości wypożyczenia
+                    existingRental.ClientId = rental.ClientId;
+                    existingRental.CarId = rental.CarId;
+                    existingRental.RentalStart = rental.RentalStart;
+                    existingRental.RentalEnd = rental.RentalEnd;
+                    existingRental.Price = rental.Price;
+
+                    // Zapisz zmiany w bazie danych
+                    _context.Rentals.Update(existingRental);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Rentals"); // Przekierowanie do listy wypożyczeń
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RentalExists(rental.Id))
+                    {
+                        return NotFound(); // Jeśli wypożyczenie zostało usunięte w międzyczasie
+                    }
+                    else
+                    {
+                        throw; // Ponów wyjątek, jeśli wystąpił inny problem
+                    }
+                }
             }
-            return View(rental);
+
+            // Przygotuj dane do widoku w przypadku błędu
+            ViewBag.ClientId = new SelectList(_userManager.Users, "Id", "UserName", rental.ClientId);
+            ViewBag.CarId = new SelectList(_context.Cars, "Id", "Brand", rental.CarId);
+
+            return PartialView("_RentalEdit", rental); // Zwróć widok edycji z błędami
+        }
+        private bool RentalExists(int id)
+        {
+            return _context.Rentals.Any(r => r.Id == id);
         }
         // Usunięcie wypożyczenia
         public async Task<IActionResult> DeleteRental(int id)
@@ -291,7 +353,8 @@ namespace CarRentalStudio.Controllers
             }
             _context.Rentals.Remove(rental);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Rentals));
+            var rentals = await _context.Rentals.ToListAsync();
+            return PartialView("_RentalList", rentals);
         }
     }
 }
