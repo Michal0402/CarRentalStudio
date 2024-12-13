@@ -22,6 +22,89 @@ namespace CarRentalStudio.Controllers
             _userManager = userManager;
         }
 
+        // GET: Select Car
+        public IActionResult SelectCar()
+        {
+            var cars = _context.Cars.Where(c => c.IsAvailable).ToList();
+            return View(cars);
+        }
+
+        // GET: Display Calendar
+        public IActionResult DisplayCalendar(int carId)
+        {
+            var car = _context.Cars.Find(carId);
+            if (car == null || !car.IsAvailable)
+            {
+                return NotFound("Samochód nie jest dostępny.");
+            }
+
+            return View(new OrderViewModel { CarId = carId });
+        }
+
+        // POST: Check Availability
+        [HttpPost]
+        public IActionResult CheckAvailability(int carId, DateTime startDate, DateTime endDate)
+        {
+            var car = _context.Cars.Find(carId);
+            if (car == null)
+            {
+                return NotFound("Samochód nie istnieje.");
+            }
+
+            var overlappingRentals = _context.Rentals.Any(r => r.CarId == carId &&
+                ((startDate >= r.RentalStart && startDate <= r.RentalEnd) ||
+                 (endDate >= r.RentalStart && endDate <= r.RentalEnd) ||
+                 (startDate <= r.RentalStart && endDate >= r.RentalEnd)));
+
+            if (overlappingRentals)
+            {
+                return Json(new { available = false, message = "Samochód jest zajęty w wybranym terminie." });
+            }
+
+            return Json(new { available = true });
+        }
+
+        // POST: Create Order
+        [HttpPost]
+        public IActionResult CreateOrder(OrderViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("DisplayCalendar", model);
+            }
+
+            var car = _context.Cars.Find(model.CarId);
+            if (car == null || !car.IsAvailable)
+            {
+                return NotFound("Samochód nie jest dostępny.");
+            }
+
+            var rental = new Rental
+            {
+                ClientId = User.Identity.Name,
+                CarId = model.CarId,
+                RentalStart = model.RentalStart,
+                RentalEnd = model.RentalEnd,
+                Price = car.DailyRate * (decimal)(model.RentalEnd - model.RentalStart).TotalDays
+            };
+
+            _context.Rentals.Add(rental);
+            _context.SaveChanges();
+
+            return RedirectToAction("Confirmation", new { rentalId = rental.Id });
+        }
+
+        public IActionResult Confirmation(int rentalId)
+        {
+            var rental = _context.Rentals.Find(rentalId);
+            if (rental == null)
+            {
+                return NotFound("Zamówienie nie istnieje.");
+            }
+
+            return View(rental);
+        }
+
         // GET: Rental
         public async Task<IActionResult> Index()
         {

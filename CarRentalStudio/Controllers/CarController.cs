@@ -21,7 +21,7 @@ namespace CarRentalStudio.Controllers
 
         public async Task<IActionResult> CarsMainPanel()
         {
-            var cars = await _context.Cars.ToListAsync();
+            var cars = _context.Cars.Where(c => c.IsAvailable).ToList();
             return View(cars);
         }
 

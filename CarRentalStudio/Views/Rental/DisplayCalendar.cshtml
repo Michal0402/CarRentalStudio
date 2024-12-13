@@ -1,0 +1,36 @@
+﻿@model OrderViewModel
+
+<h1>Wybierz Daty Wynajmu</h1>
+<form method="post" asp-action="CheckAvailability">
+    <input type="hidden" name="carId" value="@Model.CarId" />
+
+    <label for="startDate">Data początkowa:</label>
+    <input type="date" id="startDate" name="startDate" required />
+
+    <label for="endDate">Data końcowa:</label>
+    <input type="date" id="endDate" name="endDate" required />
+
+    <button type="submit">Sprawdź Dostępność</button>
+</form>
+
+<div id="availabilityResult"></div>
+
+<script>
+    document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const response = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+        });
+        const result = await response.json();
+
+        const resultDiv = document.getElementById("availabilityResult");
+        if (result.available) {
+            window.location.href = "/CarRental/Confirmation?carId=" + form.carId.value + "&startDate=" + form.startDate.value + "&endDate=" + form.endDate.value;
+        } else {
+            resultDiv.innerText = result.message;
+        }
+    });
+</script>
