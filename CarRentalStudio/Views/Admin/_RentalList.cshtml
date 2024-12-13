@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<CarRentalStudio.Models.Rental>
-
+<div style="margin-bottom: 10px;">
+    <a href="#" id="add-rental-link" class="add-rental-link">Add Rental</a>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -20,8 +22,8 @@
                 <td>@rental.RentalStart.ToString("yyyy-MM-dd")</td>
                 <td>@rental.RentalEnd.ToString("yyyy-MM-dd")</td>
                 <td>
-                    <a asp-action="EditRental" asp-route-id="@rental.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="DeleteRental" asp-route-id="@rental.Id" class="btn btn-danger">Delete</a>
+                    <a href="@Url.Action("EditRental", "Admin", new { id = rental.Id })" class="edit-rental-link btn btn-warning">Edit</a>
+                    <a href="@Url.Action("DeleteRental", "Admin", new { id = rental.Id })" class="delete-rental-link btn btn-danger">Delete</a>
                 </td>
             </tr>
         }
