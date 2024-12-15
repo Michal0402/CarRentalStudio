@@ -1,4 +1,4 @@
-﻿@model OrderViewModel
+﻿
 
 <h1>Wybierz Daty Wynajmu</h1>
 <form method="post" asp-action="CheckAvailability">
@@ -28,7 +28,7 @@
 
         const resultDiv = document.getElementById("availabilityResult");
         if (result.available) {
-            window.location.href = "/CarRental/Confirmation?carId=" + form.carId.value + "&startDate=" + form.startDate.value + "&endDate=" + form.endDate.value;
+            window.location.href = result.redirectUrl;
         } else {
             resultDiv.innerText = result.message;
         }

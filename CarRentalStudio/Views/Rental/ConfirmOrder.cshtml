@@ -1,0 +1,16 @@
+﻿@model Rental
+
+<h2>Potwierdzenie Zamówienia</h2>
+
+<div>
+    <p><strong>Marka samochodu:</strong> @Model.Car.Brand</p>
+    <p><strong>Model samochodu:</strong> @Model.Car.Model</p>
+    <p><strong>Imię klienta:</strong> @Model.ClientId</p>
+    <p><strong>Data rozpoczęcia wynajmu:</strong> @Model.RentalStart.ToString("yyyy-MM-dd")</p>
+    <p><strong>Data zakończenia wynajmu:</strong> @Model.RentalEnd.ToString("yyyy-MM-dd")</p>
+    <p><strong>Cena wynajmu:</strong> @Model.Price.ToString("C2")</p>
+</div>
+
+<form method="post">
+    <button type="submit">Potwierdź Zamówienie</button>
+</form>

@@ -22,12 +22,51 @@ namespace CarRentalStudio.Controllers
             _userManager = userManager;
         }
 
-        // GET: Select Car
-        public IActionResult SelectCar()
+        // Akcja do wyświetlania formularza potwierdzenia
+        [HttpGet]
+        public IActionResult ConfirmOrder(int carId, DateTime rentalStart, DateTime rentalEnd)
         {
-            var cars = _context.Cars.Where(c => c.IsAvailable).ToList();
-            return View(cars);
+            var car = _context.Cars.FirstOrDefault(c => c.Id == carId);
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            var rental = new Rental
+            {
+                CarId = carId,
+                Car = car,
+                RentalStart = rentalStart,
+                RentalEnd = rentalEnd,
+                ClientId = User.Identity.Name // Załóżmy, że klient jest już zalogowany
+            };
+
+            return View(rental);
         }
+
+        // Akcja do zapisu zamówienia
+        [HttpPost]
+        public IActionResult ConfirmOrder(Rental rental)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Rentals.Add(rental);
+                _context.SaveChanges();
+
+                // Przekierowanie do strony z potwierdzeniem
+                return RedirectToAction("RentalSuccess");
+            }
+
+            return View(rental);
+        }
+
+        // Akcja do wyświetlania strony potwierdzenia sukcesu
+        public IActionResult RentalSuccess()
+        {
+            return View();
+        }
+
+        
 
         // GET: Display Calendar
         public IActionResult DisplayCalendar(int carId)
@@ -45,13 +84,13 @@ namespace CarRentalStudio.Controllers
         [HttpPost]
         public IActionResult CheckAvailability(int carId, DateTime startDate, DateTime endDate)
         {
-            var car = _context.Cars.Find(carId);
+            Car? car = _context.Cars.Find(carId);
             if (car == null)
             {
                 return NotFound("Samochód nie istnieje.");
             }
-
-            var overlappingRentals = _context.Rentals.Any(r => r.CarId == carId &&
+            //Sprawdza czy samochód nie jest już wynajety
+            bool overlappingRentals = _context.Rentals.Any(r => r.CarId == carId &&
                 ((startDate >= r.RentalStart && startDate <= r.RentalEnd) ||
                  (endDate >= r.RentalStart && endDate <= r.RentalEnd) ||
                  (startDate <= r.RentalStart && endDate >= r.RentalEnd)));
@@ -61,7 +100,12 @@ namespace CarRentalStudio.Controllers
                 return Json(new { available = false, message = "Samochód jest zajęty w wybranym terminie." });
             }
 
-            return Json(new { available = true });
+            return Json(new
+            {
+                available = true,
+                redirectUrl = Url.Action("ConfirmOrder", "Rental",
+                    new { carId, rentalStart = startDate, rentalEnd = endDate })
+            });
         }
 
         // POST: Create Order
@@ -73,7 +117,7 @@ namespace CarRentalStudio.Controllers
                 return View("DisplayCalendar", model);
             }
 
-            var car = _context.Cars.Find(model.CarId);
+            Car car = _context.Cars.Find(model.CarId);
             if (car == null || !car.IsAvailable)
             {
                 return NotFound("Samochód nie jest dostępny.");
@@ -83,9 +127,9 @@ namespace CarRentalStudio.Controllers
             {
                 ClientId = User.Identity.Name,
                 CarId = model.CarId,
+                Car = car,
                 RentalStart = model.RentalStart,
                 RentalEnd = model.RentalEnd,
-                Price = car.DailyRate * (decimal)(model.RentalEnd - model.RentalStart).TotalDays
             };
 
             _context.Rentals.Add(rental);

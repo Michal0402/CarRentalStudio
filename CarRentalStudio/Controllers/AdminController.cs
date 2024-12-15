@@ -312,7 +312,6 @@ namespace CarRentalStudio.Controllers
                     existingRental.CarId = rental.CarId;
                     existingRental.RentalStart = rental.RentalStart;
                     existingRental.RentalEnd = rental.RentalEnd;
-                    existingRental.Price = rental.Price;
 
                     // Zapisz zmiany w bazie danych
                     _context.Rentals.Update(existingRental);
