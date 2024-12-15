@@ -62,18 +62,6 @@ namespace CarRentalStudio.Controllers
         // GET: Car/Create
         public IActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                foreach (var key in ModelState.Keys)
-                {
-                    var errors = ModelState[key].Errors;
-                    foreach (var error in errors)
-                    {
-                        Console.WriteLine($"Field: {key}, Error: {error.ErrorMessage}");
-                    }
-                }
-            }
-
             return View();
         }
 

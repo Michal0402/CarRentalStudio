@@ -1,0 +1,46 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h1>Edit</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="userCreateForm" method="post" asp-action="CreateUser" asp-controller="Admin">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="email" class="control-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="username" class="control-label">UserName</label>
+                <input type="username" name="username" id="username" class="form-control"/>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="control-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control"/>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="role" class="control-label">Role</label>
+                <select name="role" id="role" class="form-control">
+                    <option value="">Select a role</option>
+                    @foreach (var role in ViewBag.Roles as List<string>)
+                    {
+                        <option value="@role">@role</option>
+                    }
+                </select>
+                @if (ViewBag.Roles == null)
+                {
+                    <p class="text-danger">Roles are not loaded. Check the controller logic.</p>
+                }
+                <span class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+    </div>
+</div>

@@ -50,7 +50,7 @@ namespace CarRentalStudio.Controllers
         public IActionResult Create()
         {
             ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand");
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Id");
+            ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace CarRentalStudio.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand", rental.CarId);
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Id", rental.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", rental.ClientId);
             return View(rental);
         }
 
@@ -86,7 +86,7 @@ namespace CarRentalStudio.Controllers
                 return NotFound();
             }
             ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand", rental.CarId);
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Id", rental.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", rental.ClientId);
             return View(rental);
         }
 
@@ -123,7 +123,7 @@ namespace CarRentalStudio.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand", rental.CarId);
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Id", rental.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", rental.ClientId);
             return View(rental);
         }
 

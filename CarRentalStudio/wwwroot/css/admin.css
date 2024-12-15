@@ -1,0 +1,10 @@
+﻿.add-car-link {
+    text-decoration: none;
+    font-weight: bold;
+    color: dodgerblue;
+    cursor: pointer;
+}
+
+.add-car-link:hover {
+    text-decoration: underline;
+}

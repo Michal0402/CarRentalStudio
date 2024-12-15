@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using CarRentalStudio.Models;
 using CarRentalStudio.Data;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarRentalStudio.Controllers
 {
@@ -11,9 +13,23 @@ namespace CarRentalStudio.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public AdminController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AdminController(
+         UserManager<IdentityUser> userManager,
+         RoleManager<IdentityRole> roleManager,
+         ApplicationDbContext context)
         {
+            _userManager = userManager;
+            _roleManager = roleManager;
             _context = context;
+        }
+        // Ta metoda ustawia ViewData["IsAdmin"] dla wszystkich akcji w tym kontrolerze
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            // Sprawdza, czy użytkownik ma rolę "Administrator"
+            ViewData["IsAdmin"] = User.IsInRole("Administrator");
+            base.OnActionExecuting(context);
         }
         public IActionResult Index()
         {
@@ -28,7 +44,8 @@ namespace CarRentalStudio.Controllers
         // Dodanie nowego samochodu (GET)
         public IActionResult CreateCar()
         {
-            return View();
+            Console.WriteLine("Renderowanie widoku _CarCreate.");
+            return PartialView("_CarCreate");
         }
         // Dodanie nowego samochodu (POST)
         [HttpPost]
@@ -38,9 +55,10 @@ namespace CarRentalStudio.Controllers
             {
                 _context.Cars.Add(car);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Cars));
+                // Po dodaniu samochodu przeładuj listę samochodów w panelu admina
+                return RedirectToAction("Cars");
             }
-            return View(car);
+            return PartialView("_CarCreate", car);
         }
         // Edycja samochodu (GET)
         public async Task<IActionResult> EditCar(int id)
@@ -50,7 +68,7 @@ namespace CarRentalStudio.Controllers
             {
                 return NotFound();
             }
-            return View(car);
+            return PartialView("_CarEdit", car);
         }
         // Edycja samochodu (POST)
         [HttpPost]
@@ -60,9 +78,10 @@ namespace CarRentalStudio.Controllers
             {
                 _context.Cars.Update(car);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Cars));
+                var cars = await _context.Cars.ToListAsync();
+                return PartialView("_CarList", cars);
             }
-            return View(car);
+            return PartialView("_CarEdit", car);
         }
 
         // Usunięcie samochodu
@@ -75,64 +94,144 @@ namespace CarRentalStudio.Controllers
             }
             _context.Cars.Remove(car);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Cars));
+
+            var cars = await _context.Cars.ToListAsync();
+            return PartialView("_CarList", cars);
         }
         // wyświetlenie użytkowników
-        public async Task<IActionResult> Clients()
+        public async Task<IActionResult> Users()
         {
-            var clients = await _context.Clients.ToListAsync();
-            return PartialView("_UserList", clients);
+            var users = await _context.Users.ToListAsync();
+            return PartialView("_UserList", users);
         }
         // Dodanie użytkownika (GET)
-        public IActionResult CreateClient()
+        public async Task<IActionResult> CreateUser()
         {
-            return View();
+            var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            ViewBag.Roles = roles; // Przekaż role do widoku
+            return PartialView("_UserCreate");
         }
         //Dodanie użytkownika (POST)
         [HttpPost]
-        public async Task<IActionResult> CreateClient(Client client)
+        public async Task<IActionResult> CreateUser(string email, string password, string role)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(role))
             {
-                _context.Clients.Add(client);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Clients));
+                ModelState.AddModelError("", "All fields are required.");
+                return PartialView("_UserCreate");
             }
-            return View(client);
+
+            var user = new IdentityUser
+            {
+                UserName = email,
+                Email = email
+            };
+
+            // Tworzenie użytkownika
+            var result = await _userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return PartialView("_UserCreate");
+            }
+
+            // Przypisanie roli
+            if (!await _roleManager.RoleExistsAsync(role))
+            {
+                ModelState.AddModelError("", "Role does not exist.");
+                return PartialView("_UserCreate");
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(user, role);
+            if (!roleResult.Succeeded)
+            {
+                foreach (var error in roleResult.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return PartialView("_UserCreate");
+            }
+
+            // Jeśli wszystko się udało, przeładuj listę użytkowników
+            var users = await _userManager.Users.ToListAsync();
+            return PartialView("_UserList", users);
         }
         // Edycja użytkownika (GET)
-        public async Task<IActionResult> EditClient(int id)
+        public async Task<IActionResult> EditUser(string id)
         {
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null)
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            return View(client);
+            var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            ViewBag.Roles = roles;
+
+            return PartialView("_UserEdit", user);
         }
         //Edycja użytkownika (POST)
         [HttpPost]
-        public async Task<IActionResult> EditClient(Client client)
+        public async Task<IActionResult> EditUser(string id, IdentityUser updatedUser, string role)
         {
             if (ModelState.IsValid)
             {
-                _context.Clients.Update(client);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Clients));
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Aktualizuj dane użytkownika
+                user.UserName = updatedUser.UserName;
+                user.Email = updatedUser.Email;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to update user.");
+                    var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+                    ViewBag.Roles = roles;
+                    return PartialView("_UserEdit", updatedUser);
+                }
+
+                // Aktualizacja roli użytkownika
+                var userRoles = await _userManager.GetRolesAsync(user);
+                if (userRoles.Count > 0)
+                {
+                    await _userManager.RemoveFromRolesAsync(user, userRoles);
+                }
+
+                if (!string.IsNullOrEmpty(role))
+                {
+                    await _userManager.AddToRoleAsync(user, role);
+                }
+
+                // Pobierz zaktualizowaną listę użytkowników
+                var users = await _userManager.Users.ToListAsync();
+                return PartialView("_UserList", users);
             }
-            return View(client);
+
+            var availableRoles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            ViewBag.Roles = availableRoles;
+
+            return PartialView("_UserEdit", updatedUser);
         }
         //Usunięcie użytkownika (GET)
-        public async Task<IActionResult> DeleteClient(int id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null)
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            _context.Clients.Remove(client);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Clients));
+            var users = await _context.Users.ToListAsync();
+            return PartialView("_UserList", users);
+
         }
         // Wyświetlenie listy wypożyczeń
         public async Task<IActionResult> Rentals()
