@@ -67,8 +67,8 @@ namespace CarRentalStudio.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand", rental.CarId);
-            ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", rental.ClientId);
+            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand", rental.Car);
+            ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", rental.Client);
             return View(rental);
         }
 
