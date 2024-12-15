@@ -17,7 +17,7 @@
                <div class="detail"><img src="icons/power.svg" alt="">@car.HorsePower</div>
                <div class="detail"><img src="icons/seats.svg" alt="">@car.Mileage</div>
            </div>
-           <a class="details-button" href="@Url.Action("Description", "Car", new { id = car.Id })">Szczegóły</a>
+            <a class="details-button" asp-controller= "Rental" asp-action="DisplayCalendar" asp-route-carId="@car.Id">Szczegóły</a>
        </div>
    }
 </div>
