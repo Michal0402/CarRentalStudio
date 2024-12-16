@@ -167,6 +167,7 @@ namespace CarRentalStudio.Controllers
             {
                 return NotFound();
             }
+
             var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
             ViewBag.Roles = roles;
 

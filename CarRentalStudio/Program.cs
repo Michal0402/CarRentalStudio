@@ -1,6 +1,8 @@
 using CarRentalStudio.Data;
+using CarRentalStudio.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 public class Program
 {
     public static async Task Main(string[] args)
@@ -15,6 +17,13 @@ public class Program
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddControllersWithViews();
+
+        builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+        builder.Services.AddSingleton<EmailService>(sp =>
+        {
+            var settings = sp.GetRequiredService<IOptions<EmailSettings>>().Value;
+            return new EmailService(settings);
+        });
 
         var app = builder.Build();
 

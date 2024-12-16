@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CarRentalStudio.Data;
 using CarRentalStudio.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Runtime.ConstrainedExecution;
 
 namespace CarRentalStudio.Controllers
 {
@@ -15,11 +16,12 @@ namespace CarRentalStudio.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-
-        public RentalController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        private readonly EmailService _emailService;
+        public RentalController(ApplicationDbContext context, UserManager<IdentityUser> userManager, EmailService emailService)
         {
             _context = context;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         // GET: Rental
@@ -69,8 +71,21 @@ namespace CarRentalStudio.Controllers
                 rental.Client = await _userManager.FindByIdAsync(rental.ClientId);
                 rental.Car = await _context.Cars.FindAsync(rental.CarId);
 
+                var client = await _context.Users.FindAsync(rental.ClientId);
+                var car = await _context.Cars.FindAsync(rental.CarId);
+
                 _context.Add(rental);
                 await _context.SaveChangesAsync();
+                string emailBody = $@"
+                <h1>Rental confirmation</h1>
+                <p>Thank you for renting our car!</p>
+                <p><strong>Car:</strong> {car.Brand}</p>
+                <p><strong>Start Date:</strong> {rental.RentalStart}</p>
+                <p><strong>End Date:</strong> {rental.RentalEnd}</p>
+                <p><strong>Price:</strong> {rental.Price:C}</p>";
+
+                // Wysyłanie e-maila
+                await _emailService.SendEmailAsync(client.Email, "Rental Confirmation", emailBody);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand", rental.CarId);
@@ -172,5 +187,6 @@ namespace CarRentalStudio.Controllers
         {
             return _context.Rentals.Any(e => e.Id == id);
         }
+
     }
 }
