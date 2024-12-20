@@ -1,6 +1,4 @@
-﻿
-
-<h1>Wybierz Daty Wynajmu</h1>
+﻿<h1>Wybierz Daty Wynajmu</h1>
 <form method="post" asp-action="CheckAvailability">
     <input type="hidden" name="carId" value="@Model.CarId" />
 
@@ -12,8 +10,6 @@
 
     <button type="submit">Sprawdź Dostępność</button>
 </form>
-
-<div id="availabilityResult"></div>
 
 <script>
     document.querySelector("form").addEventListener("submit", async (e) => {
@@ -27,10 +23,16 @@
         const result = await response.json();
 
         const resultDiv = document.getElementById("availabilityResult");
-        if (result.available) {
+
+        if (result && result.available) {
+            // Przekierowanie do strony potwierdzenia
             window.location.href = result.redirectUrl;
-        } else {
+        } else if (result && result.message) {
+            // Wyświetlanie komunikatu o niedostępności samochodu
             resultDiv.innerText = result.message;
+        } else {
+            resultDiv.innerText = "Wystąpił błąd. Spróbuj ponownie.";
         }
     });
 </script>
+

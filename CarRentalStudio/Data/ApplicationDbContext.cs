@@ -24,13 +24,16 @@ namespace CarRentalStudio.Data
              .WithMany(c => c.Rentals)
              .HasForeignKey(r => r.CarId);
 
-           /* modelBuilder.Entity<Car>()
-                .Property(c => c.DailyRate)
-                .HasPrecision(18, 2); // Equivalent to decimal(18, 2)
+            Console.WriteLine("OnModelCreating was called!");
+            /* modelBuilder.Entity<Car>()
+                 .Property(c => c.DailyRate)
+                 .HasPrecision(18, 2); // Equivalent to decimal(18, 2)
 
-            modelBuilder.Entity<Rental>()
-                .Property(r => r.Price)
-                .HasPrecision(18, 2);*/
+             modelBuilder.Entity<Rental>()
+                 .Property(r => r.Price)
+                 .HasPrecision(18, 2);*/
+
+            
 
         }
     }
