@@ -43,16 +43,27 @@ namespace CarRentalStudio.Controllers
                 ClientId = User.Identity.Name // Załóżmy, że klient jest już zalogowany
             };
 
-            if (ModelState.IsValid)
-            {
-                _context.Rentals.Add(rental);
-                _context.SaveChanges();
+            return View(rental);
+        }
 
-                // Przekierowanie do strony z potwierdzeniem
-                return RedirectToAction("RentalSuccess");
+        [HttpPost]
+        public IActionResult ConfirmOrder(Rental rental)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(rental);
             }
 
-            return View(rental);
+            _context.Rentals.Add(rental);
+            _context.SaveChanges();
+
+            var car = _context.Cars.FirstOrDefault(c => c.Id == rental.CarId);
+            if (car == null)
+            {
+                return NotFound("Samochód nie został znaleziony");
+            }
+
+            return RedirectToAction("RentalSuccess");
         }
 
         // Akcja do wyświetlania strony potwierdzenia sukcesu
@@ -80,7 +91,7 @@ namespace CarRentalStudio.Controllers
             Car? car = _context.Cars.Find(carId);
             if (car == null)
             {
-                return NotFound("Samochód nie istnieje.");
+                return Json(new { available = false, message = "Samochód nie istnieje." });
             }
             //Sprawdza czy samochód nie jest już wynajety
             bool isAvailable = _context.Rentals.Any(r => r.CarId == carId &&
@@ -88,16 +99,22 @@ namespace CarRentalStudio.Controllers
                  (endDate >= r.RentalStart && endDate <= r.RentalEnd) ||
                  (startDate <= r.RentalStart && endDate >= r.RentalEnd)));
 
-            if (!isAvailable)
+            if (isAvailable)
             {
                 return Json(new { available = false, message = "Samochód jest zajęty w wybranym terminie." });
             }
 
-            return Json(new { available = true, redirectUrl = Url.Action("ConfirmOrder", new { carId, rentalStart = startDate, rentalEnd = endDate }) });
+            return Json(new
+            {
+                available = true,
+                redirectUrl = Url.Action("ConfirmOrder", new { carId, rentalStart = startDate, rentalEnd = endDate })
+
+            });
+            
         }
 
-    // GET: Rental
-    public async Task<IActionResult> Index()
+        // GET: Rental
+        public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Rentals.Include(r => r.Car).Include(r => r.Client);
             return View(await applicationDbContext.ToListAsync());

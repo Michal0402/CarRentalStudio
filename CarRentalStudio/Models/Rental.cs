@@ -9,10 +9,14 @@ namespace CarRentalStudio.Models
     {
         [Key] public int Id { get; set; }
 
-        [ForeignKey("Client")] public string ClientId { get; set; }
+        [ForeignKey("Client")]
+        [Required]
+        public string? ClientId { get; set; }
         public IdentityUser? Client { get; set; }
 
-        [ForeignKey("Car")] public int CarId { get; set; }
+        [ForeignKey("Car")]
+        [Required]
+        public int CarId { get; set; }
         public Car? Car { get; set; }
 
         [Required] 
@@ -25,7 +29,7 @@ namespace CarRentalStudio.Models
         [Required]
         [Range(0, double.MaxValue)]
         [Precision(18, 2)]
-        public decimal Price { get; set; } = 200; //=> CalculatePrice();
+        public decimal? Price { get; set; } = 0;
 
         public bool IsActive => DateTime.Now < RentalEnd && DateTime.Now >= RentalStart;
 
@@ -43,6 +47,11 @@ namespace CarRentalStudio.Models
 
         private decimal CalculatePrice()
         {
+            if (Car == null)
+            {
+                return 0;
+            }
+
             int rentalDays = (RentalEnd - RentalStart).Days;
             if (rentalDays <= 0)
             {
