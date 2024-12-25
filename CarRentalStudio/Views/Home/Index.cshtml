@@ -2,12 +2,138 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <h2>Coś</h2>
-    <h2>Michał</h2>
-    <h3>1234</h3>
-    <h2>Filip</h2>
-    <h3>Test</h3>
+<div class="slajd"></div>
+
+<div class="content">
+    <div class="content-dropdown">
+        <div class="mercedesDropdown">
+            <button>Mercedes</button>
+            <div class="dropdownContent">
+                <a href="">klasa A</a>
+                <a href="">klasa C</a>
+                <a href="http://127.0.0.1:5500/mercedesS400d.html">klasa S</a>
+                <a href="">klasa G</a>
+                <a href="">Amg GT</a>
+            </div>
+        </div>
+        <div class="mercedesDropdown">
+            <button>Bmw</button>
+            <div class="dropdownContent" id="bmwDropdownCOntent">
+                <a href="">Seria 1</a>
+                <a href="">Seria 3</a>
+                <a href="">Seria 5</a>
+                <a href="">Seria 7</a>
+                <a href="">Seria 8</a>
+            </div>
+        </div>
+        <div class="mercedesDropdown">
+            <button>Audi</button>
+            <div class="dropdownContent" id="Audi">
+                <a href="">A3</a>
+                <a href="">A5</a>
+                <a href="">A7</a>
+                <a href="">A8</a>
+                <a href="">R8</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-child">
+        <div class="card" id="aventadorCard">
+            <img src="images/Aventador (Średni).jpg" class="card-img">
+            <div class="card-body">
+                <h1 class="card-tittle" id="aventador-card-tittle">LAMBORGINI</h1>
+                <p class="card-sub-tiitle">AVENTADOR SVJ</p>
+                <p class="card-info">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, odit cum excepturi rerum reiciendis dolorem vel error, consequatur facilis voluptas ipsa officiis ratione laudantium fugiat nobis incidunt magnam mollitia perspiciatis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe alias maxime quibusdam voluptates necessitatibus. Repellendus qui deserunt, dolores consequatur laudantium similique accusamus aliquid tenetur nostrum beatae minus, quae repellat? Vel? Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus at quo, illum quae inventore nisi reiciendis doloremque dolore debitis? Voluptatibus illum officiis magni aut eligendi, neque velit exercitationem consequatur reprehenderit?</p>
+            </div>
+        </div>
+        <div class="card" id="urusCard">
+            <img src="images/Urus (Średni).jpg" class="card-img">
+            <div class="card-body" id="lamboAventador-info">
+                <h1 class="card-tittle" id="urus-card-tittle">LAMBORGINI</h1>
+                <p class="card-sub-tiitle">URUS</p>
+                <p class="card-info">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, odit cum excepturi rerum reiciendis dolorem vel error, consequatur facilis voluptas ipsa officiis ratione laudantium fugiat nobis incidunt magnam mollitia perspiciatis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe alias maxime quibusdam voluptates necessitatibus. Repellendus qui deserunt, dolores consequatur laudantium similique accusamus aliquid tenetur nostrum beatae minus, quae repellat? Vel? Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus at quo, illum quae inventore nisi reiciendis doloremque dolore debitis? Voluptatibus illum officiis magni aut eligendi, neque velit exercitationem consequatur reprehenderit?</p>
+            </div>
+        </div>
+        <div class="card" id="porscheCard">
+            <img src="images/Porsche (Średni).jpg" class="card-img">
+            <div class="card-body" id="urus-card-body">
+                <h1 class="card-tittle" id="porsche-card-tittle">PORSCHE</h1>
+                <p class="card-sub-tiitle">911 GT2 RS</p>
+                <p class="card-info">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, odit cum excepturi rerum reiciendis dolorem vel error, consequatur facilis voluptas ipsa officiis ratione laudantium fugiat nobis incidunt magnam mollitia perspiciatis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe alias maxime quibusdam voluptates necessitatibus. Repellendus qui deserunt, dolores consequatur laudantium similique accusamus aliquid tenetur nostrum beatae minus, quae repellat? Vel? Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus at quo, illum quae inventore nisi reiciendis doloremque dolore debitis? Voluptatibus illum officiis magni aut eligendi, neque velit exercitationem consequatur reprehenderit?</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="howItWorksPanel">
+    <div class="howItWorksHeader"><h1>Jak To Działa?</h1></div>
+    <div class="howItWorksCards">
+        <div class="howItWorksCards-iteam" id="card1">
+            <img src="images/jaktodziala1.svg">
+            <h2>Wypełnij formularz online</h2>
+            <p>Zarezerwuj swój samochód w Panelu Rezerwacyjnym, zadzwoń, napisz maila lub skontaktuj się z nami poprzez social media – zależnie, która metoda jest dla Ciebie najwygodniejsza. Złożenie rezerwacji zajmie Ci najwyżej kilka minut.</p>
+        </div>
+        <div class="howItWorksCards-iteam" id="card2">
+            <img src="images/jaktodziala2.svg">
+            <h2>Poczekaj na potwierdzenie</h2>
+            <p>Teraz potwierdzamy rezerwację i przygotowujemy Twój samochód. Daj nam chwilę – właśnie dokładamy wszelkich starań, aby każdy detal zachwycał Cię swoją perfekcją przez całą podróż. Powinieneś otrzymać wiadomość e-mail z informacją o zatwierdzeniu rezerwacji.</p>
+        </div>
+        <div class="howItWorksCards-iteam" id="card3">
+            <img src="images/jaktodziala3.svg">
+            <h2>Odbierz auto i ruszaj w drogę</h2>
+            <p>Wszystko gotowe. Wsiadaj i jedź, dokąd tylko pragniesz. Delektuj się tym doświadczeniem – jest niepowtarzalne.</p>
+        </div>
+    </div>
+    <a href="http://127.0.0.1:5500/jakToDziala.html"><div class="howItWorksButton">Pokaz szczegoly procesu</div></a>
+</div>
+
+<div class="dlaczegoMy">
+    <div class="dlaczegoMy-content">
+        <div class="dlaczegoMy-iteam" id="iteam-1">
+            <h1>Dlaczego My?</h1>
+        </div>
+        <div class="dlaczegoMy-iteam" id="iteam-2">
+            <h1>4,9</h1>
+            <br>
+            <p>Średnia ocena <br>naszych usług w Google</p>
+
+        </div>
+        <div class="dlaczegoMy-iteam" id="iteam-3">
+            <h1>2,7</h1>
+            <br>
+            <p>Najkrótszy czas potrzebny <br>na przyspieszenie do setki</p>
+        </div>
+        <div class="dlaczegoMy-iteam" id="iteam-4">
+            <h1>24/7</h1>
+            <br>
+            <p>Dostępność <br>naszych usług</p>
+        </div>
+    </div>
+    <div class="dlaczegoMy-content2">
+        <div class="dlaczegoMy-img1">
+            <div class="img1">
+            </div>
+            <div class="text1">
+                <h2>
+                    Wspólna pasja
+                </h2>
+                <p>
+                    Działamy szybko jak Nissan GT-R. Mamy tyle energii, co Dodge Challenger. A o swoich usługach myślimy nowocześnie niczym Porsche o wyposażeniu 911. Jesteśmy ekspertami motoryzacji premium, którzy każdego dnia zachwycają się jej wyjątkowością.
+                    <br><br>
+                    Pragniemy podarować Ci niezapomniane doświadczenie. Właśnie dlatego zapraszamy Cię do świata pełnego adrenaliny, zachwytu i szampańskiej zabawy. Ten świat tworzą najszybsze i najpotężniejsze samochody: teraz dostępne na kilka Twoich kliknięć. To co – ruszasz z nami?
+                </p>
+            </div>
+        </div>
+        <div class="dlaczegoMy-img2">
+
+            <div class="text2">
+                <h2>Zróżnicowana flota</h2>
+                <p>Od prestiżowego Porsche 911, poprzez potężne BMW M5, aż po unikatowe Audi R8 Preformance Green Hell. Wybieraj spośród najlepszych marek i najbardziej imponujących pojazdów. Dobierz idealny samochód do swoich potrzeb. A jeśli potrzebujesz pomocy – napisz do nas.</p>
+            </div>
+            <div class="img2">
+            </div>
+        </div>
+
+    </div>
 </div>

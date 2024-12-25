@@ -4,48 +4,76 @@
     ViewData["Title"] = "Details";
 }
 
-@{
-   
-   
+<div class="car-details1">
+    <div class="car-banner">
+        <img src="@Model.Image" alt="@Model.Brand @Model.Model" class="car-banner-image">
+        <div class="car-info">
+            <h1>Wynajem @Model.Brand @Model.Model</h1>
+            <p>Specyfikacja</p>
+            <div class="specifications">
+                <div>
+                    <span class="spec-value">@Model.HorsePower KM</span>
+                    <span class="spec-label">Moc</span>
+                </div>
+                <div>
+                    <span class="spec-value">@Model.HorsePower s</span>
+                    <span class="spec-label">0-100</span>
+                </div>
+                <div>
+                    <span class="spec-value">@Model.HorsePower</span>
+                    <span class="spec-label">Napęd</span>
+                </div>
+                <div>
+                    <span class="spec-value">@Model.HorsePower</span>
+                    <span class="spec-label">Silnik</span>
+                </div>
+                <div>
+                    <span class="spec-value">@Model.Transmission</span>
+                    <span class="spec-label">Skrzynia</span>
+                </div>
+                <div>
+                    <span class="spec-value">@Model.HorsePower km/h</span>
+                    <span class="spec-label">Prędkość maksymalna</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input id="rentalDatePicker" type="text" placeholder="Wybierz datę" />
+    <form method="POST" action="/Rental/OrderConfirmation">
+        <input type="hidden" name="carId" value="@ViewBag.CarId" />
+        <input type="hidden" id="selectedDates" name="selectedDates" value="" />
+        <button class="btn-primary1" type="submit">Potwierdź</button>
+    </form>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Pobranie niedostępnych dat z kontrolera
+        const carId = window.location.pathname.split('/').pop();
+        fetch(`/Car/GetUnavailableDates?carId=${carId}`)
+            .then(response => response.json())
+            .then(data => {
+                flatpickr('#rentalDatePicker', {
+                    mode: 'range', // Umożliwia wybór zakresu dat
+                    minDate: 'today', // Blokuje wybór dat wcześniejszych niż dzisiaj
+                    disable: data, // Lista dat lub zakresów zablokowanych
+                    dateFormat: 'Y-m-d', // Format wyświetlania dat
+                    onChange: function (selectedDates, dateStr, instance) {
+                        // Wybrane daty
+                        console.log(selectedDates); // Tablica obiektów Date
+                        console.log(dateStr); // Ciąg w formacie YYYY-MM-DD
+
+                        // Przechowanie daty w ukrytym polu (dla formularza)
+                        document.getElementById('selectedDates').value = dateStr;
+                    }
+                });
+            })
+            .catch(error => console.error('Błąd podczas pobierania dat:', error));
+    });
+</script>
+
+<style>
     
-}
-
-<table id="reservationCalendar">
-    <thead>
-        <tr>
-            <td>
-                <<
-            </td>
-            <td colspan="5">
-                
-            </td>
-            <td>
-                >>
-            </td>
-        </tr>
-    </thead>
-    <tr>
-        <td>
-            Mon
-        </td>
-        <td>
-            Tue
-        </td>
-        <td>
-            Wed
-        </td>
-        <td>
-            Thu
-        </td>
-        <td>
-            Fri
-        </td>
-        <td>
-            Sat
-        </td>
-        <td>
-            Sun
-        </td>
-    </tr>
-
+</style>
 

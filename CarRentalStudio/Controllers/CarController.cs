@@ -19,20 +19,39 @@ namespace CarRentalStudio.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> CarsMainPanel()
+        [HttpGet]
+        public IActionResult GetUnavailableDates(int carId)
         {
-            var cars = _context.Cars.Where(c => c.IsAvailable).ToList();
-            return View(cars);
-        }
+            var car = _context.Cars.Include(c => c.Rentals).FirstOrDefault(c => c.Id == carId);
 
-        public async Task<IActionResult> Description(int id)
-        {
-            var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
             if (car == null)
             {
                 return NotFound();
             }
-            return View(car);
+
+            // Lista zablokowanych dat
+            var unavailableDates = car.Rentals.Select(r => new
+            {
+                from = r.RentalStart.ToString("yyyy-MM-dd"), // Data rozpoczęcia
+                to = r.RentalEnd.ToString("yyyy-MM-dd")     // Data zakończenia
+            }).ToList();
+
+            return Json(unavailableDates);
+        }
+
+        // GET: Car/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            ViewBag.CarId = id;
+            var Car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
+                
+            return View(Car);
+        }
+
+        public async Task<IActionResult> CarsMainPanel()
+        {
+            var cars = _context.Cars.ToList();
+            return View(cars);
         }
 
         // GET: Car
@@ -41,27 +60,33 @@ namespace CarRentalStudio.Controllers
             return View(await _context.Cars.ToListAsync());
         }
 
-        // GET: Car/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var car = await _context.Cars
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null)
-            {
-                return NotFound();
-            }
-
-            return View(car);
-        }
-
         // GET: Car/Create
         public IActionResult Create()
         {
+            ViewBag.FuelTypes = Enum.GetValues(typeof(FuelType))
+            .Cast<FuelType>()
+            .Select(ft => new SelectListItem
+            {
+                Text = ft.ToString(),
+                Value = ft.ToString()
+            });
+
+            ViewBag.TransmissionTypes = Enum.GetValues(typeof(TransmissionType))
+                .Cast<TransmissionType>()
+                .Select(tt => new SelectListItem
+                {
+                    Text = tt.ToString(),
+                    Value = tt.ToString()
+                });
+
+            ViewBag.BodyTypes = Enum.GetValues(typeof(BodyType))
+                .Cast<BodyType>()
+                .Select(bt => new SelectListItem
+                {
+                    Text = bt.ToString(),
+                    Value = bt.ToString()
+                });
+
             return View();
         }
 
@@ -70,7 +95,7 @@ namespace CarRentalStudio.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Brand,Model,Description,Year,Mileage,HorsePower,DailyRate,IsAvailable,Image")] Car car)
+        public async Task<IActionResult> Create([Bind("Id, Brand,Model,Year,Mileage,HorsePower, Torque, EngineCapacity, FuelType, Transmission, BodyType, DailyRate,Image")] Car car)
         {
             if (ModelState.IsValid)
             {
@@ -78,6 +103,31 @@ namespace CarRentalStudio.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.FuelTypes = Enum.GetValues(typeof(FuelType))
+            .Cast<FuelType>()
+            .Select(ft => new SelectListItem
+            {
+                Text = ft.ToString(),
+                Value = ft.ToString()
+            });
+
+            ViewBag.TransmissionTypes = Enum.GetValues(typeof(TransmissionType))
+                .Cast<TransmissionType>()
+                .Select(tt => new SelectListItem
+                {
+                    Text = tt.ToString(),
+                    Value = tt.ToString()
+                });
+
+            ViewBag.BodyTypes = Enum.GetValues(typeof(BodyType))
+                .Cast<BodyType>()
+                .Select(bt => new SelectListItem
+                {
+                    Text = bt.ToString(),
+                    Value = bt.ToString()
+                });
+
             return View(car);
         }
 
@@ -102,7 +152,7 @@ namespace CarRentalStudio.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Brand,Model,Description,Year,Mileage,HorsePower,DailyRate,IsAvailable,Image")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Brand,Model,Year,Mileage,HorsePower, Torque, EngineCapacity, FuelType, Transmission, BodyType, DailyRate,Image")] Car car)
         {
             if (id != car.Id)
             {

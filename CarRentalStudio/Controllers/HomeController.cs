@@ -18,6 +18,11 @@ namespace CarRentalStudio.Controllers
             return View();
         }
 
+        public IActionResult HowItWorks()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

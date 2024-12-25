@@ -24,93 +24,65 @@ namespace CarRentalStudio.Controllers
             _emailService = emailService;
         }
 
-        // Akcja do wyświetlania formularza potwierdzenia
-        [HttpGet]
-        public IActionResult ConfirmOrder(int carId, DateTime rentalStart, DateTime rentalEnd)
+        public async Task<IActionResult> OrderConfirmation(string selectedDates, int carId)
         {
-            var car = _context.Cars.FirstOrDefault(c => c.Id == carId);
+            // selectedDates zawiera wybrane daty w formacie "YYYY-MM-DD to YYYY-MM-DD"
+            var dates = selectedDates.Split(" to "); // Rozdzielenie zakresu dat
+            DateTime startDate = DateTime.Parse(dates[0]);
+            DateTime endDate = DateTime.Parse(dates[1]);
+
+            var car = await _context.Cars.FindAsync(carId);
             if (car == null)
             {
-                return NotFound("Samochód nie został znaleziony");
+                return NotFound("Nie znaleziono samochodu.");
+            }
+
+            int rentalDays = (endDate - startDate).Days;
+            decimal totalPrice = rentalDays * car.DailyRate;
+
+            var viewModel = new ConfirmOrderViewModel
+            {
+                StartDate = startDate,
+                EndDate = endDate,
+                CarId = car.Id,
+                CarBrand = car.Brand,
+                CarModel = car.Model,
+                PricePerDay = car.DailyRate,
+                TotalPrice = totalPrice
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FinalizeOrder(ConfirmOrderViewModel model)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+            if (user == null)
+            {
+                return Unauthorized("Nie znaleziono użytkownika.");
             }
 
             var rental = new Rental
             {
-                CarId = carId,
-                Car = car,
-                RentalStart = rentalStart,
-                RentalEnd = rentalEnd,
-                ClientId = User.Identity.Name // Załóżmy, że klient jest już zalogowany
+                CarId = model.CarId,
+                Car = await _context.Cars.FindAsync(model.CarId),
+                RentalStart = model.StartDate,
+                RentalEnd = model.EndDate,
+                ClientId = user.Id,
+                Client = user,
             };
 
-            return View(rental);
-        }
-
-        [HttpPost]
-        public IActionResult ConfirmOrder(Rental rental)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(rental);
-            }
+            rental.Price = rental.CalculatePrice();
 
             _context.Rentals.Add(rental);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            var car = _context.Cars.FirstOrDefault(c => c.Id == rental.CarId);
-            if (car == null)
-            {
-                return NotFound("Samochód nie został znaleziony");
-            }
-
-            return RedirectToAction("RentalSuccess");
+            return RedirectToAction("Confirmation", new { rentalId = rental.Id });
         }
-
-        // Akcja do wyświetlania strony potwierdzenia sukcesu
-        public IActionResult RentalSuccess()
+        public IActionResult Confirmation()
         {
             return View();
-        }
-
-        // GET: Display Calendar
-        public IActionResult DisplayCalendar(int carId)
-        {
-            var car = _context.Cars.Find(carId);
-            if (car == null || !car.IsAvailable)
-            {
-                return NotFound("Samochód nie jest dostępny.");
-            }
-
-            return View(new { CarId = carId, Car = car });
-        }
-
-        // POST: Check Availability
-        [HttpPost]
-        public IActionResult CheckAvailability(int carId, DateTime startDate, DateTime endDate)
-        {
-            Car? car = _context.Cars.Find(carId);
-            if (car == null)
-            {
-                return Json(new { available = false, message = "Samochód nie istnieje." });
-            }
-            //Sprawdza czy samochód nie jest już wynajety
-            bool isAvailable = _context.Rentals.Any(r => r.CarId == carId &&
-                ((startDate >= r.RentalStart && startDate <= r.RentalEnd) ||
-                 (endDate >= r.RentalStart && endDate <= r.RentalEnd) ||
-                 (startDate <= r.RentalStart && endDate >= r.RentalEnd)));
-
-            if (isAvailable)
-            {
-                return Json(new { available = false, message = "Samochód jest zajęty w wybranym terminie." });
-            }
-
-            return Json(new
-            {
-                available = true,
-                redirectUrl = Url.Action("ConfirmOrder", new { carId, rentalStart = startDate, rentalEnd = endDate })
-
-            });
-            
         }
 
         // GET: Rental
@@ -157,21 +129,25 @@ namespace CarRentalStudio.Controllers
         {
             if (ModelState.IsValid)
             {
-                var client = await _userManager.FindByIdAsync(rental.ClientId);
-                var car = await _context.Cars.FindAsync(rental.CarId);
+                rental.Client = await _userManager.FindByIdAsync(rental.ClientId);
+                rental.Car = await _context.Cars.FindAsync(rental.CarId);
 
-                if(car != null)
+                if (rental.Client == null || rental.Car == null)
                 {
-                    rental.Car = car;
-                    rental.Client = client;
+                    ModelState.AddModelError("", "Nie znaleziono klienta lub samochodu.");
+                    ViewData["Clients"] = new SelectList(_context.Users, "Id", "UserName", rental.ClientId);
+                    ViewData["Cars"] = new SelectList(_context.Cars, "Id", "Model", rental.CarId);
+                    return View(rental);
                 }
+
+                rental.Price = rental.CalculatePrice();
 
                 _context.Add(rental);
                 await _context.SaveChangesAsync();
                 string emailBody = $@"
                 <h1>Rental confirmation</h1>
                 <p>Thank you for renting our car!</p>
-                <p><strong>Car:</strong> {car.Brand}</p>
+                <p><strong>Car:</strong> {rental.Car.Brand}</p>
                 <p><strong>Start Date:</strong> {rental.RentalStart}</p>
                 <p><strong>End Date:</strong> {rental.RentalEnd}</p>
                 <p><strong>Price:</strong> {rental.Price:C}</p>";
@@ -181,7 +157,8 @@ namespace CarRentalStudio.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Brand", rental.Car);
-            ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", rental.Client);
+            ViewData["ClientId"] = new SelectList(_context.Users, "Id", "UserName", rental.Client);
+
             return View(rental);
         }
 

@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<CarRentalStudio.Models.Car>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "index";
 }
 
-<h1>Index</h1>
+<h1>index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -19,9 +19,6 @@
                 @Html.DisplayNameFor(model => model.Model)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Year)
             </th>
             <th>
@@ -31,10 +28,22 @@
                 @Html.DisplayNameFor(model => model.HorsePower)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DailyRate)
+                @Html.DisplayNameFor(model => model.Torque)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsAvailable)
+                @Html.DisplayNameFor(model => model.EngineCapacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FuelType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transmission)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BodyType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DailyRate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Image)
@@ -52,9 +61,6 @@
                 @Html.DisplayFor(modelItem => item.Model)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
@@ -64,10 +70,22 @@
                 @Html.DisplayFor(modelItem => item.HorsePower)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DailyRate)
+                @Html.DisplayFor(modelItem => item.Torque)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
+                @Html.DisplayFor(modelItem => item.EngineCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FuelType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Transmission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BodyType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DailyRate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Image)
