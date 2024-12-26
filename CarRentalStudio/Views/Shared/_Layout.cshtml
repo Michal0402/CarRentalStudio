@@ -40,12 +40,28 @@
         </div>
 
     </header>
-    <div >
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"].ToString();
+        var currentAction = ViewContext.RouteData.Values["action"].ToString();
+        var bodyClass = "default-background";
+    }
+
+    @if(currentController == "Admin")
+    {
+        bodyClass = "white-background";
+    }
+
+    <div class="@bodyClass">
         @RenderBody()
     </div>
-    <div >
-        @Html.Partial("_Footer")
-    </div>
+
+    @if (currentController != "Admin" )
+    {
+        <div>
+            @Html.Partial("_Footer")
+        </div>
+    }
+    
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

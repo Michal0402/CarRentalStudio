@@ -1,4 +1,5 @@
 html, body {
+    width: 100%;
     margin: 0;
     padding: 0;
     display: flex;
@@ -13,7 +14,7 @@ body {
 }
 
 .container {
-    
+    width: 100%;
 }
 
 
@@ -515,7 +516,7 @@ nav ul {
     }
 
     .howItWorksPanel p {
-        font-size: 20px;
+        font-size: 15px;
         text-align: justify;
         position: flex;
         top: -30%;
@@ -588,6 +589,7 @@ nav ul {
     height: 50px;
     justify-content: center;
     align-items: center;
+    text-align:center;
 }
 
 .howItWorksButton {
@@ -695,6 +697,7 @@ nav ul {
 .dlaczegoMy-img1 {
     width: 90%;
     height: 400px;
+    margin: 20px;
     display: flex;
     justify-content: space-between;
 }
@@ -702,7 +705,7 @@ nav ul {
 .img1 {
     width: 100%;
     height: 100%;
-    background-image: url(..\images\dlaczegomy1.jpg);
+    background-image: url(../images/dlaczegomy1.jpg);
     border-radius: 40px;
     background-repeat: no-repeat;
     background-size: cover;
@@ -745,6 +748,8 @@ nav ul {
 .text2 {
     width: 100%;
     margin: 30px;
+    position: relative;
+    right: 70px;
 }
 
     .text2 p {
@@ -780,6 +785,8 @@ nav ul {
 
 #przeczytales {
     text-align: left;
+    position: relative;
+    left: -20rem;
 }
 
 #kontakt {
@@ -824,140 +831,11 @@ nav ul {
     }
 
 #mapa {
-    width: 57%;
+    width: 85%;
     border-bottom: solid 2px #8dc6ff;
 }
 
-.howItWorksPanel {
-    display: flex;
-    margin: auto;
-    width: 90%;
-    height: 820px;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-    color: #000000;
-}
 
-    .howItWorksPanel img {
-        scale: 1.5;
-        background-image: none;
-    }
-
-    .howItWorksPanel h1 {
-        position: relative;
-        top: 35px;
-    }
-
-    .howItWorksPanel h1, h2 {
-        font-size: 30px;
-        font-weight: 900;
-        text-align: center;
-    }
-
-    .howItWorksPanel h1 {
-        font-family: 'Alfa Slab One', Arial, Helvetica, sans-serif;
-        font-size: 50px;
-        color: #fff;
-    }
-
-    .howItWorksPanel p {
-        font-size: 20px;
-        text-align: justify;
-        position: flex;
-        top: -30%;
-        color: #000000;
-    }
-
-.howItWorksCards {
-    display: flex;
-    width: 90%;
-    height: 500px;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.howItWorksCards-iteam {
-    display: flex;
-    background-color: hsla(210, 4%, 78%, 0.637);
-    width: 30%;
-    height: 500px;
-    margin: 20px;
-    padding: 40px;
-    border-radius: 20px;
-    align-items: center;
-    flex-direction: column;
-    -webkit-box-shadow: 1px 1px 32px -12px rgba(0, 0, 0, 1);
-    -moz-box-shadow: 1px 1px 32px -12px rgba(0, 0, 0, 1);
-    box-shadow: 1px 1px 32px -12px rgba(0, 0, 0, 1);
-    text-shadow: 4px 4px 22px rgba(66, 68, 90, 0.68);
-}
-
-    .howItWorksCards-iteam img {
-        position: relative;
-        top: 40px;
-    }
-
-    .howItWorksCards-iteam h2 {
-        position: relative;
-        top: 80px;
-    }
-
-    .howItWorksCards-iteam p {
-        position: relative;
-        top: 100px;
-    }
-
-.howItWorksCards .howItWorksCards-iteam:hover {
-    transform: scale(1.1, 1.1);
-    transition: 500ms linear;
-}
-
-.howItWorksCards:hover > .howItWorksCards-iteam:not(:hover) {
-    filter: blur(10px);
-    transform: scale(0.9, 0.9);
-}
-
-.howItWorksCards-iteam:not(:hover) {
-    transition: 1s;
-}
-
-.howItWorksPanel a {
-    width: 30%;
-    display: flex;
-    justify-content: center;
-    text-decoration: none;
-}
-
-.howItWorksButton {
-    display: flex;
-    width: 50%;
-    height: 50px;
-    justify-content: center;
-    align-items: center;
-}
-
-.howItWorksButton {
-    padding: 10px;
-    border-radius: 999px;
-    background-color: rgba(226, 225, 225, 0.815);
-    color: rgb(0, 0, 0);
-    font-weight: 900;
-    font-size: 16px;
-    border: none;
-    min-width: 50px;
-}
-
-    .howItWorksButton:hover {
-        cursor: pointer;
-        color: #fff;
-        background-color: #8dc6ff;
-        transition: 150ms linear;
-    }
-
-    .howItWorksButton:not(:hover) {
-        transition: 1s;
-    }
 
 .contentJakToDziala {
     width: 100%;
@@ -999,8 +877,20 @@ nav ul {
     .contentJakToDziala-content p {
         color: white;
         text-align: justify;
-        font-size: 20px;
+        font-size: 15px;
         text-shadow: 5px 4px 6px rgba(66, 68, 90, 1);
         
     }
+
+.default-background {
+    
+}
+
+.white-background {
+    background: white;
+    text-shadow: none;
+    height: 700px;
+    padding: 20px;
+}
+
 
