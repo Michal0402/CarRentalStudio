@@ -48,10 +48,20 @@ namespace CarRentalStudio.Controllers
             return View(Car);
         }
 
-        public async Task<IActionResult> CarsMainPanel()
+        public async Task<IActionResult> CarsMainPanel(string searchBrand)
         {
-            var cars = _context.Cars.ToList();
-            return View(cars);
+            // Pobranie wszystkich samochodów
+            var cars = from c in _context.Cars
+                       select c;
+
+            // Filtrowanie według marki
+            if (!string.IsNullOrEmpty(searchBrand))
+            {
+                cars = cars.Where(c => c.Brand.ToLower().Contains(searchBrand.ToLower()));
+            }
+
+            // Przekazanie danych do widoku
+            return Json(await cars.ToListAsync());
         }
 
         // GET: Car
