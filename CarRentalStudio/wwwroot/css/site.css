@@ -43,6 +43,7 @@ body {
     overflow: hidden;
     width: 350px;
     text-align: center;
+    text-shadow:none;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -516,7 +517,7 @@ nav ul {
     }
 
     .howItWorksPanel p {
-        font-size: 15px;
+        font-size: 1rem;
         text-align: justify;
         position: flex;
         top: -30%;
@@ -877,7 +878,7 @@ nav ul {
     .contentJakToDziala-content p {
         color: white;
         text-align: justify;
-        font-size: 15px;
+        font-size: 1.25rem;
         text-shadow: 5px 4px 6px rgba(66, 68, 90, 1);
         
     }

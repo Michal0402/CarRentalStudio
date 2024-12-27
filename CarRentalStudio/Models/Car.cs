@@ -31,6 +31,7 @@ namespace CarRentalStudio.Models
         public int Torque { get; set; }
 
         [Required(ErrorMessage = "Pojemność silnika jest wymagana.")]
+        [Range(0.0, float.MaxValue, ErrorMessage = "Wartość musi być liczbą większą od zera.")]
         public float EngineCapacity { get; set; }
 
         [Required(ErrorMessage = "Rodzaj paliwa jest wymagany.")]
@@ -46,14 +47,16 @@ namespace CarRentalStudio.Models
         public Drive Drive { get; set; }
 
         [Required(ErrorMessage = "Podaj przyśpieszenie 0-100")]
+        [Range(0.0, double.MaxValue, ErrorMessage = "Wartość musi być liczbą większą od zera.")]
         public double Acceleration { get; set; }
 
         [Required(ErrorMessage = "Podaj prędkość maksymalną")]
+        [Range(0.0, double.MaxValue, ErrorMessage = "Wartość musi być liczbą większą od zera.")]
         public double VMax { get; set; }
 
         [Required]
         [Precision(18, 2)]
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [Range(0.0, double.MaxValue, ErrorMessage = "Wartość musi być liczbą większą od zera.")]
         public decimal DailyRate { get; set; }
         public bool IsAvailable => Rentals.All(r => r.RentalEnd < DateTime.Now);
         public string Image { get; set; } = "https://staging.simple.tn/wp-content/uploads/2024/07/default.png";
