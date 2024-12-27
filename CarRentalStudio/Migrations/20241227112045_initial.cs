@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CarRentalStudio.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,6 +66,9 @@ namespace CarRentalStudio.Migrations
                     FuelType = table.Column<int>(type: "int", nullable: false),
                     Transmission = table.Column<int>(type: "int", nullable: false),
                     BodyType = table.Column<int>(type: "int", nullable: false),
+                    Drive = table.Column<int>(type: "int", nullable: false),
+                    Acceleration = table.Column<double>(type: "float", nullable: false),
+                    VMax = table.Column<double>(type: "float", nullable: false),
                     DailyRate = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },

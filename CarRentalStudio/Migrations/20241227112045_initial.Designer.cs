@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalStudio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241222192608_intial")]
-    partial class intial
+    [Migration("20241227112045_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace CarRentalStudio.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("Acceleration")
+                        .HasColumnType("float");
+
                     b.Property<int>("BodyType")
                         .HasColumnType("int");
 
@@ -43,6 +46,9 @@ namespace CarRentalStudio.Migrations
                     b.Property<decimal>("DailyRate")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Drive")
+                        .HasColumnType("int");
 
                     b.Property<float>("EngineCapacity")
                         .HasColumnType("real");
@@ -69,6 +75,9 @@ namespace CarRentalStudio.Migrations
 
                     b.Property<int>("Transmission")
                         .HasColumnType("int");
+
+                    b.Property<double>("VMax")
+                        .HasColumnType("float");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");

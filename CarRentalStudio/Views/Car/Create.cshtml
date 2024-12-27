@@ -1,7 +1,7 @@
 ﻿@model CarRentalStudio.Models.Car
 
 @{
-    ViewData["Title"] = "Create1";
+    ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
@@ -63,6 +63,21 @@
                 <span asp-validation-for="BodyType" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Drive" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Drive, new SelectList(Enum.GetValues(typeof(Drive)), Drive.RWD), new { @class = "form-control" })
+                <span asp-validation-for="Drive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Acceleration" class="control-label"></label>
+                <input asp-for="Acceleration" class="form-control" />
+                <span asp-validation-for="Acceleration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VMax" class="control-label"></label>
+                <input asp-for="VMax" class="form-control" />
+                <span asp-validation-for="VMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="DailyRate" class="control-label"></label>
                 <input asp-for="DailyRate" class="form-control" />
                 <span asp-validation-for="DailyRate" class="text-danger"></span>
@@ -83,3 +98,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

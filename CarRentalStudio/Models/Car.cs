@@ -31,7 +31,6 @@ namespace CarRentalStudio.Models
         public int Torque { get; set; }
 
         [Required(ErrorMessage = "Pojemność silnika jest wymagana.")]
-        [Range(0.5, 10.0, ErrorMessage = "Pojemność silnika musi być w zakresie od 0.5 do 10.0 litrów.")]
         public float EngineCapacity { get; set; }
 
         [Required(ErrorMessage = "Rodzaj paliwa jest wymagany.")]
@@ -42,6 +41,15 @@ namespace CarRentalStudio.Models
 
         [Required(ErrorMessage = "Typ nadwozia jest wymagany.")]
         public BodyType BodyType { get; set; }
+
+        [Required(ErrorMessage = "Wybierz rodzaj napędu")]
+        public Drive Drive { get; set; }
+
+        [Required(ErrorMessage = "Podaj przyśpieszenie 0-100")]
+        public double Acceleration { get; set; }
+
+        [Required(ErrorMessage = "Podaj prędkość maksymalną")]
+        public double VMax { get; set; }
 
         [Required]
         [Precision(18, 2)]
@@ -55,11 +63,19 @@ namespace CarRentalStudio.Models
         public Car()
         {
             Rentals = new List<Rental>();
-            FuelType = FuelType.Benzyna; // Domyślny typ paliwa
-            Transmission = TransmissionType.Manualna; // Domyślny typ skrzyni biegów
-            BodyType = BodyType.Sedan; // Domyślny typ nadwozia
+            FuelType = FuelType.Benzyna; 
+            Transmission = TransmissionType.Manualna; 
+            BodyType = BodyType.Sedan; 
+            Drive = Drive.RWD;
         }
 
+    }
+
+    public enum Drive
+    {
+        FWD,
+        RWD,
+        AWD
     }
 
     public enum FuelType

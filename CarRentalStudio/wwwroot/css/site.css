@@ -1,20 +1,20 @@
-html, body {
+body {
     width: 100%;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    background: rgb(0, 0, 0);
+    background: linear-gradient(138deg, rgba(0,0,0,1) 18%, rgba(75,81,87,1) 41%, rgba(92,126,159,1) 57%, rgba(81, 150, 219, 0.808) 76%, rgba(0, 118, 235, 0.637) 98%);
     font-family: 'Roboto', 'Arial';
     text-shadow: 5px 4px 6px rgba(66, 68, 90, 1);
 }
 
-body {
-    background: linear-gradient(138deg, rgba(0,0,0,1) 18%, rgba(75,81,87,1) 41%, rgba(92,126,159,1) 57%, rgba(81, 150, 219, 0.808) 76%, rgba(0, 118, 235, 0.637) 98%);
+.row {
+    background-color: white;
 }
 
-.container {
-    width: 100%;
+.table {
+    background-color: white;
 }
 
 
@@ -166,7 +166,7 @@ h3 {
 
 .spec-value {
     font-size: 22px;
-    color: #ceff00;
+    color: #8dc6ff;
     font-weight: bold;
 }
 
@@ -195,7 +195,7 @@ h3 {
 }
 
 .btn-primary1 {
-    background: #ceff00;
+    background: #8dc6ff;
     color: #000;
     text-transform: uppercase;
     padding: 10px 20px;
@@ -206,7 +206,7 @@ h3 {
 }
 
     .btn-primary1:hover {
-        background: #a4cc00;
+        background: hsla(210, 4%, 78%, 0.637);
     }
 
 nav {
@@ -892,5 +892,8 @@ nav ul {
     height: 700px;
     padding: 20px;
 }
+
+
+
 
 

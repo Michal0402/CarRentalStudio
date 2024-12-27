@@ -43,6 +43,15 @@
                 @Html.DisplayNameFor(model => model.BodyType)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Drive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Acceleration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VMax)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DailyRate)
             </th>
             <th>
@@ -85,8 +94,17 @@
                 @Html.DisplayFor(modelItem => item.BodyType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DailyRate)
+                @Html.DisplayFor(modelItem => item.Drive)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Acceleration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VMax)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DailyRate)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Image)
             </td>

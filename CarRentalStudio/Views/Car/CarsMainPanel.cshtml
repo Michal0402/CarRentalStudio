@@ -4,15 +4,16 @@
     ViewData["Title"] = "CarsMainPanel";
 }
 
+
 <div class="cars-container">
    @foreach (var car in Model)
    {
        <div class="car-tile">
-            <a href="@Url.Action("Details", new { id = car.Id })"><img src="@car.Image" alt="Ferrari 296 GTB" class="car-image"></a>
+            <a href="@Url.Action("Details", new { id = car.Id })"><img src="@car.Image" alt="Samochod" class="car-image"></a>
            <h3>@car.Brand @car.Model</h3>
            <p class="price">od <span class="price-value">@car.DailyRate zł</span></p>
            <div class="car-details">
-               <div class="detail"><img src="~/images/icons/acceleration.svg" alt=""> 2,9 s do 100km/h</div>
+               <div class="detail"><img src="~/images/icons/acceleration.svg" alt=""> @car.Acceleration s do 100km/h</div>
                <div class="detail"><img src="~/images/icons/gearshift.png" alt=""> @car.Transmission</div>
                <div class="detail"><img src="~/images/icons/power.svg" alt="">@car.HorsePower KM / @car.Torque NM</div>
                 <div class="detail"><i class="fa-solid fa-gas-pump"></i>@car.FuelType</div>
@@ -22,3 +23,5 @@
        </div>
    }
 </div>
+
+

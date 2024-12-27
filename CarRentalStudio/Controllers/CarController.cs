@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarRentalStudio.Data;
 using CarRentalStudio.Models;
+using System.Drawing.Drawing2D;
 
 namespace CarRentalStudio.Controllers
 {
@@ -42,26 +43,19 @@ namespace CarRentalStudio.Controllers
         // GET: Car/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
             ViewBag.CarId = id;
             var Car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
                 
             return View(Car);
         }
 
-        public async Task<IActionResult> CarsMainPanel(string searchBrand)
+        public async Task<IActionResult> CarsMainPanel()
         {
-            // Pobranie wszystkich samochodów
-            var cars = from c in _context.Cars
-                       select c;
-
-            // Filtrowanie według marki
-            if (!string.IsNullOrEmpty(searchBrand))
-            {
-                cars = cars.Where(c => c.Brand.ToLower().Contains(searchBrand.ToLower()));
-            }
-
-            // Przekazanie danych do widoku
-            return Json(await cars.ToListAsync());
+            return View(await _context.Cars.ToListAsync());
         }
 
         // GET: Car
@@ -105,7 +99,7 @@ namespace CarRentalStudio.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id, Brand,Model,Year,Mileage,HorsePower, Torque, EngineCapacity, FuelType, Transmission, BodyType, DailyRate,Image")] Car car)
+        public async Task<IActionResult> Create([Bind("Id, Brand,Model,Year,Mileage,HorsePower, Torque, EngineCapacity, FuelType, Transmission, BodyType, Drive, Acceleration, VMax, DailyRate,Image")] Car car)
         {
             if (ModelState.IsValid)
             {
@@ -138,6 +132,14 @@ namespace CarRentalStudio.Controllers
                     Value = bt.ToString()
                 });
 
+            ViewBag.FuelTypes = Enum.GetValues(typeof(Drive))
+            .Cast<Drive>()
+            .Select(ft => new SelectListItem
+            {
+                Text = ft.ToString(),
+                Value = ft.ToString()
+            });
+
             return View(car);
         }
 
@@ -162,7 +164,7 @@ namespace CarRentalStudio.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, Brand,Model,Year,Mileage,HorsePower, Torque, EngineCapacity, FuelType, Transmission, BodyType, DailyRate,Image")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Brand,Model,Year,Mileage,HorsePower, Torque, EngineCapacity, FuelType, Transmission, BodyType, Drive, Acceleration, VMax, DailyRate,Image")] Car car)
         {
             if (id != car.Id)
             {
