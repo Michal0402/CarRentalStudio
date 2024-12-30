@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CarRentalStudio.Data;
 using CarRentalStudio.Models;
 using System.Drawing.Drawing2D;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarRentalStudio.Controllers
 {
@@ -19,7 +20,6 @@ namespace CarRentalStudio.Controllers
         {
             _context = context;
         }
-
         [HttpGet]
         public IActionResult GetUnavailableDates(int carId)
         {
@@ -39,7 +39,6 @@ namespace CarRentalStudio.Controllers
 
             return Json(unavailableDates);
         }
-
         // GET: Car/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -55,15 +54,19 @@ namespace CarRentalStudio.Controllers
 
         public async Task<IActionResult> CarsMainPanel()
         {
-            return View(await _context.Cars.ToListAsync());
+            var cars = await _context.Cars.ToListAsync();
+            var brands = cars.Select(c => c.Brand).Distinct().ToList(); // Pobieranie unikalnych marek
+            ViewBag.Brands = brands; // Przekazanie do widoku
+            return View(cars);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Car
         public async Task<IActionResult> Index()
         {
             return View(await _context.Cars.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Car/Create
         public IActionResult Create()
         {
@@ -93,7 +96,7 @@ namespace CarRentalStudio.Controllers
 
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Car/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -142,7 +145,7 @@ namespace CarRentalStudio.Controllers
 
             return View(car);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Car/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -158,7 +161,7 @@ namespace CarRentalStudio.Controllers
             }
             return View(car);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Car/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -193,7 +196,7 @@ namespace CarRentalStudio.Controllers
             }
             return View(car);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Car/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -211,7 +214,7 @@ namespace CarRentalStudio.Controllers
 
             return View(car);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Car/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

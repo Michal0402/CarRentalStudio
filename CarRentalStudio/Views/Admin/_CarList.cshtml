@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<CarRentalStudio.Models.Car>
 <div style="margin-bottom: 10px;">
-    <a href="#" id="add-car-link" class="add-car-link">Add Car</a>
+    <a href="#" id="add-car-link" class="add-car-link">Dodaj</a>
 </div>
 <table class="table">
     <thead>
         <tr>
             <th>Id</th>
-            <th>Brand</th>
+            <th>Marka</th>
             <th>Model</th>
-            <th>Year</th>
-            <th>Manage</th>
+            <th>Rok produkcji</th>
+            <th>Zarządzaj</th>
         </tr>
     </thead>
     <tbody>
@@ -21,8 +21,8 @@
                 <td>@car.Model</td>
                 <td>@car.Year</td>
                 <td>
-                    <a href="@Url.Action("EditCar", "Admin", new { id = car.Id })" class="edit-car-link btn btn-warning">Edit</a>
-                    <a href="@Url.Action("DeleteCar", "Admin", new { id = car.Id })" class="delete-car-link btn btn-danger">Delete</a>
+                    <a href="@Url.Action("EditCar", "Admin", new { id = car.Id })" class="edit-car-link btn btn-warning">Edytuj</a>
+                    <a href="@Url.Action("DeleteCar", "Admin", new { id = car.Id })" class="delete-car-link btn btn-danger">Usuń</a>
                 </td>
             </tr>
         }

@@ -9,6 +9,7 @@ using CarRentalStudio.Data;
 using CarRentalStudio.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.ConstrainedExecution;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarRentalStudio.Controllers
 {
@@ -84,14 +85,14 @@ namespace CarRentalStudio.Controllers
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Rental
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Rentals.Include(r => r.Car).Include(r => r.Client);
             return View(await applicationDbContext.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Rental/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -111,7 +112,7 @@ namespace CarRentalStudio.Controllers
 
             return View(rental);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Rental/Create
         public IActionResult Create(int clientId, int carId)
         {
@@ -119,7 +120,7 @@ namespace CarRentalStudio.Controllers
             ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Rental/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -161,7 +162,7 @@ namespace CarRentalStudio.Controllers
 
             return View(rental);
         }
-
+        [Authorize(Roles = "Admin,Manager")]
         // GET: Rental/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -179,7 +180,7 @@ namespace CarRentalStudio.Controllers
             ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", rental.ClientId);
             return View(rental);
         }
-
+        [Authorize(Roles = "Admin,Manager")]
         // POST: Rental/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -216,7 +217,7 @@ namespace CarRentalStudio.Controllers
             ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", rental.ClientId);
             return View(rental);
         }
-
+        [Authorize(Roles = "Admin,Manager")]
         // GET: Rental/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -236,7 +237,7 @@ namespace CarRentalStudio.Controllers
 
             return View(rental);
         }
-
+        [Authorize(Roles = "Admin,Manager")]
         // POST: Rental/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -255,6 +256,24 @@ namespace CarRentalStudio.Controllers
         private bool RentalExists(int id)
         {
             return _context.Rentals.Any(e => e.Id == id);
+        }
+        [Authorize]
+        public async Task<IActionResult> RentalHistory()
+        {
+            // Pobierz zalogowanego użytkownika
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Pobierz historię wypożyczeń dla zalogowanego użytkownika
+            var rentals = await _context.Rentals
+                .Where(r => r.ClientId == user.Id) 
+                .Include(r => r.Car) 
+                .ToListAsync();
+
+            return View(rentals);
         }
 
     }

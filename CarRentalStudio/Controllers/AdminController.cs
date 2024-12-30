@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CarRentalStudio.Controllers
 {
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Admin,Manager")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;

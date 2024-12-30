@@ -1,0 +1,21 @@
+﻿@page
+@using Microsoft.AspNetCore.Http.Features
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "Uwierzytelninie dwuskładnikowe (2FA)";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h3>@ViewData["Title"]</h3>
+@{
+    {
+        <div class="alert alert-danger">
+            <strong>Uwierzytelnianie dwuskładnikowe jest obecnie niedostępne. Za wszystkie utrudnienia przepraszamy</strong>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

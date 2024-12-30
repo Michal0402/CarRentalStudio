@@ -1,9 +1,9 @@
 ﻿@model Microsoft.AspNetCore.Identity.IdentityUser
 @{
-    ViewData["Title"] = "Create User";
+    ViewData["Title"] = "Dodaj użytkownika";
 }
 
-<h1>Create User</h1>
+<h1>Dodaj użytkownika</h1>
 
 <div class="row">
     <div class="col-md-4">
@@ -16,14 +16,14 @@
             </div>
 
             <div class="form-group">
-                <label for="password" class="control-label">Password</label>
+                <label for="password" class="control-label">Hasło</label>
                 <input type="password" name="password" id="password" class="form-control" required />
                 <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="role" class="control-label">Role</label>
+                <label for="role" class="control-label">Rola</label>
                 <select name="role" id="role" class="form-control" required>
-                    <option value="">Select a role</option>
+                    <option value="">Wybierz rolę</option>
                     @foreach (var role in ViewBag.Roles as List<string>)
                     {
                         <option value="@role">@role</option>
@@ -31,7 +31,7 @@
                 </select>
                 <span class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Dodaj</button>
         </form>
     </div>
 </div>

@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<CarRentalStudio.Models.Rental>
 <div style="margin-bottom: 10px;">
-    <a  asp-controller="Rental" asp-action="Create" >Add Rental</a>
+    <a href="#" id="add-rental-link" class="add-rental-link">Dodaj</a>
 </div>
 <table class="table">
     <thead>
         <tr>
             <th>Id</th>
-            <th>Car</th>
-            <th>Client</th>
-            <th>Rental Date</th>
-            <th>Manage</th>
+            <th>Samochód</th>
+            <th>Klient</th>
+            <th>Okres wypożyczenia</th>
+            <th>Zarządzaj</th>
         </tr>
     </thead>
     <tbody>
@@ -22,8 +22,8 @@
                 <td>@rental.RentalStart.ToString("yyyy-MM-dd")</td>
                 <td>@rental.RentalEnd.ToString("yyyy-MM-dd")</td>
                 <td>
-                    <a href="@Url.Action("EditRental", "Admin", new { id = rental.Id })" class="edit-rental-link btn btn-warning">Edit</a>
-                    <a href="@Url.Action("DeleteRental", "Admin", new { id = rental.Id })" class="delete-rental-link btn btn-danger">Delete</a>
+                    <a href="@Url.Action("EditRental", "Admin", new { id = rental.Id })" class="edit-rental-link btn btn-warning">Edytuj</a>
+                    <a href="@Url.Action("DeleteRental", "Admin", new { id = rental.Id })" class="delete-rental-link btn btn-danger">Usuń</a>
                 </td>
             </tr>
         }

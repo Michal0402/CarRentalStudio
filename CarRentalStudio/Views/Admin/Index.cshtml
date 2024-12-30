@@ -1,14 +1,20 @@
 ﻿
 <div class="manage-sections">
 
-    <!-- Przycisk do zarządzania samochodami -->
-    <button class="btn btn-primary" id="manageCarsBtn">Manage Cars</button>
-
-    <!-- Przycisk do zarządzania użytkownikami -->
-    <button class="btn btn-primary" id="manageUsersBtn">Manage Users</button>
-
+   
+    @if (User.IsInRole("Admin"))
+    {
+        <!-- Przycisk do zarządzania samochodami -->
+        <button class="btn btn-primary" id="manageCarsBtn">Zarządzaj samochodami</button>
+        <!-- Przycisk do zarządzania użytkownikami -->
+        <button class="btn btn-primary" id="manageUsersBtn">Zarządzaj użytkownikami</button>
+    }
     <!-- Przycisk do zarządzania rezerwacjami -->
-    <button class="btn btn-primary" id="manageRentalsBtn">Manage Rentals</button>
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <button class="btn btn-primary" id="manageRentalsBtn">Zarządzaj wypożyczeniami</button>
+    }
+ 
 </div>
 
 <!-- Sekcja na dane, które się zmieniają po kliknięciu w jeden z przycisków -->
@@ -113,7 +119,7 @@
              $(document).on('click', '#add-rental-link', function (e) {
                 e.preventDefault(); // Zapobiega przeładowaniu strony
 
-                // Wywołanie żądania GET do kontrolera Admin/CreateUser
+                // Wywołanie żądania GET do kontrolera Admin/CreateRental
                 $.get('@Url.Action("CreateRental", "Admin")', function (data) {
                     $('#dataContainer').html(data); // Załaduj formularz do kontenera
                 }).fail(function () {

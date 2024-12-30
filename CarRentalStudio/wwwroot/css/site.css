@@ -893,6 +893,73 @@ nav ul {
     height: 700px;
     padding: 20px;
 }
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.filter-panel {
+    background-color: white;
+    height: 50px;
+    margin: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between; /* Rozk³ad elementów na lewo i prawo */
+    align-items: center; /* Wyœrodkowanie w pionie */
+}
+.filter-options {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Odstêp miêdzy elementami w lewej sekcji */
+    position: relative; /* Umo¿liwia kontrolowanie pozycji dzieci */
+}
+.filter-panel {
+    position: relative;
+}
+
+.filter-dropdown {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: #fff;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    width: max-content;
+}
+
+.filter-button {
+    cursor: pointer;
+}
+
+.clear-button {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.brand-filter-item {
+    margin-bottom: 5px;
+}
+
+.car-count {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.sort-options {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Odstêp miêdzy etykiet¹ a select */
+}
+select {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+label {
+    font-size: 14px;
+    color: #333;
+}
 
 
 

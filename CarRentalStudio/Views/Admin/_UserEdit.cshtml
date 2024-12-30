@@ -15,27 +15,27 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="username" class="control-label">UserName</label>
+                <label for="username" class="control-label">Nazwa użytkownika</label>
                 <input type="username" name="username" id="username" class="form-control"/>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="password" class="control-label">Password</label>
+                <label for="password" class="control-label">Hasło</label>
                 <input type="password" name="password" id="password" class="form-control"/>
                 <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="role" class="control-label">Role</label>
+                <label for="role" class="control-label">Rola</label>
                 <select name="role" id="role" class="form-control">
-                    <option value="">Select a role</option>
+                    <option value="">Wybierz rolę</option>
                     @foreach (var role in ViewBag.Roles as List<string>)
                     {
                         <option value="@role">@role</option>
                     }
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Edit</button>
+            <button type="submit" class="btn btn-primary">Edytuj</button>
         </form>
     </div>
 </div>

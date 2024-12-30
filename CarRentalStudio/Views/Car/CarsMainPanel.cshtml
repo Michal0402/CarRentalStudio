@@ -2,26 +2,110 @@
 
 @{
     ViewData["Title"] = "CarsMainPanel";
+    var brands = ViewBag.Brands as List<string>;
 }
+<div class="header">
+    <h1>Wypożyczalnia samochodów sportowych</h1>
+    <p>Znajdź swój idealny samochód. Wybieraj spośród najlepszych marek i najbardziej imponujących pojazdów.</p>
+</div>
 
+<div class="filter-panel">
+    <div class="filter-options">
+        <button id="toggle-filter" class="filter-button">Filtruj</button>
+        <div id="filter-dropdown" class="filter-dropdown" style="display: none; position: absolute;">
+            <button id="clear-filters" class="clear-button">Wyczyść wszystkie</button>
+            <div id="brand-filters">
+                @if (brands != null && brands.Any())
+                {
+                    foreach (var brand in brands)
+                    {
+                        <div class="brand-filter-item">
+                            <label>
+                                <input type="checkbox" value="@brand" class="brand-checkbox"> @brand
+                            </label>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="car-count">
+        <p>Samochody (@Model.Count())</p>
+    </div>
+    <div class="sort-options">
+        <label for="sort">Sortuj według ceny:</label>
+        <select id="sort">
+            <option value="price-asc">Cena (rosnąco)</option>
+            <option value="price-desc">Cena (malejąco)</option>
+        </select>
+    </div>
+</div>
 
 <div class="cars-container">
-   @foreach (var car in Model)
-   {
-       <div class="car-tile">
+    @foreach (var car in Model)
+    {
+        <div class="car-tile" data-price="@car.DailyRate" data-brand="@car.Brand">
             <a href="@Url.Action("Details", new { id = car.Id })"><img src="@car.Image" alt="Samochod" class="car-image"></a>
-           <h3>@car.Brand @car.Model</h3>
-           <p class="price">od <span class="price-value">@car.DailyRate zł</span></p>
-           <div class="car-details">
-               <div class="detail"><img src="~/images/icons/acceleration.svg" alt=""> @car.Acceleration s do 100km/h</div>
-               <div class="detail"><img src="~/images/icons/gearshift.png" alt=""> @car.Transmission</div>
-               <div class="detail"><img src="~/images/icons/power.svg" alt="">@car.HorsePower KM / @car.Torque NM</div>
+            <h3>@car.Brand @car.Model</h3>
+            <p class="price">od <span class="price-value">@car.DailyRate zł</span></p>
+            <div class="car-details">
+                <div class="detail"><img src="~/images/icons/acceleration.svg" alt="">@car.Acceleration s do 100km/h</div>
+                <div class="detail"><img src="~/images/icons/gearshift.png" alt="">@car.Transmission</div>
+                <div class="detail"><img src="~/images/icons/power.svg" alt="">@car.HorsePower KM / @car.Torque NM</div>
                 <div class="detail"><i class="fa-solid fa-gas-pump"></i>@car.FuelType</div>
-           </div>
+            </div>
             <a href="@Url.Action("Details", new { id = car.Id })" class="details-button">Zobacz szczegóły</a>
-            
-       </div>
-   }
+        </div>
+    }
 </div>
+
+<script>
+         document.getElementById('sort').addEventListener('change', function () {
+        const sortOption = this.value; // Pobiera wybraną opcję sortowania
+        const container = document.querySelector('.cars-container');
+        const cars = Array.from(container.querySelectorAll('.car-tile')); // Pobiera wszystkie samochody
+
+        // Sortowanie na podstawie ceny (data-price)
+        cars.sort((a, b) => {
+            const priceA = parseFloat(a.dataset.price);
+            const priceB = parseFloat(b.dataset.price);
+
+            if (sortOption === 'price-asc') {
+                return priceA - priceB; // Sortowanie rosnące
+            } else if (sortOption === 'price-desc') {
+                return priceB - priceA; // Sortowanie malejące
+            }
+        });
+
+        // Przebudowanie listy w widoku
+        cars.forEach(car => container.appendChild(car));
+    });
+</script>
+<script>
+    // Toggle filter dropdown visibility
+    document.getElementById('toggle-filter').addEventListener('click', function () {
+        const dropdown = document.getElementById('filter-dropdown');
+        const isHidden = dropdown.style.display === 'none';
+        dropdown.style.display = isHidden ? 'block' : 'none';
+    });
+
+    // Filter cars by brand
+    document.getElementById('brand-filters').addEventListener('change', function () {
+        const selectedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value.toLowerCase());
+        const cars = document.querySelectorAll('.car-tile');
+
+        cars.forEach(car => {
+            const carBrand = car.getAttribute('data-brand').toLowerCase();
+            car.style.display = selectedBrands.length === 0 || selectedBrands.includes(carBrand) ? 'block' : 'none';
+        });
+    });
+
+    // Clear all filters
+    document.getElementById('clear-filters').addEventListener('click', function () {
+        document.querySelectorAll('.brand-checkbox').forEach(cb => cb.checked = false);
+        document.querySelectorAll('.car-tile').forEach(car => car.style.display = 'block');
+    });
+</script>
+
 
 

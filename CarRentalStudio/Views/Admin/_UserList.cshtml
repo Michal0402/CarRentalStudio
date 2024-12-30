@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
 <div style="margin-bottom: 10px;">
-    <a href="#" id="add-user-link" class="add-user-link">Add User</a>
+    <a href="#" id="add-user-link" class="add-user-link">Dodaj</a>
 </div>
 <table class="table">
     <thead>
         <tr>
             <th>Id</th>
-            <th>Username</th>
+            <th>Nazwa użytkownika</th>
             <th>Email</th>
-            <th>Manage</th>
+            <th>Zarządzaj</th>
         </tr>
     </thead>
     <tbody>
@@ -19,8 +19,8 @@
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
                 <td>
-                    <a href="@Url.Action("EditUser", "Admin", new { id = user.Id })" class="edit-user-link btn btn-warning">Edit</a>
-                    <a href="@Url.Action("DeleteUser", "Admin", new { id = user.Id })" class="delete-user-link btn btn-danger">Delete</a>
+                    <a href="@Url.Action("EditUser", "Admin", new { id = user.Id })" class="edit-user-link btn btn-warning">Edytuj</a>
+                    <a href="@Url.Action("DeleteUser", "Admin", new { id = user.Id })" class="delete-user-link btn btn-danger">Usuń</a>
                 </td>
             </tr>
         }

@@ -1,58 +1,95 @@
 ﻿@model CarRentalStudio.Models.Car
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Dodaj";
 }
 
-<h1>Create</h1>
+<h1>Dodaj</h1>
 
-<h4>Car</h4>
+<h4>Samochód</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateCar" asp-controller="Admin" method="post" id="carCreateForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
+                <label asp-for="Brand" class="control-label">Marka</label>
                 <input asp-for="Brand" class="form-control" />
                 <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
+                <label asp-for="Model" class="control-label">Model</label>
                 <input asp-for="Model" class="form-control" />
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
+                <label asp-for="Year" class="control-label">Rok produkcji</label>
                 <input asp-for="Year" class="form-control" />
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Mileage" class="control-label"></label>
+                <label asp-for="Mileage" class="control-label">Przebieg</label>
                 <input asp-for="Mileage" class="form-control" />
                 <span asp-validation-for="Mileage" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="HorsePower" class="control-label"></label>
+                <label asp-for="HorsePower" class="control-label">Moc Silnika</label>
                 <input asp-for="HorsePower" class="form-control" />
                 <span asp-validation-for="HorsePower" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DailyRate" class="control-label"></label>
-                <input asp-for="DailyRate" class="form-control" />
-                <span asp-validation-for="DailyRate" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsAvailable" /> @Html.DisplayNameFor(model => model.IsAvailable)
-                </label>
+                <label asp-for="Torque" class="control-label">Moment obrotowy</label>
+                <input asp-for="Torque" class="form-control" />
+                <span asp-validation-for="Torque" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
+                <label asp-for="EngineCapacity" class="control-label">Pojemność</label>
+                <input asp-for="EngineCapacity" class="form-control" type="number" />
+                <span asp-validation-for="EngineCapacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FuelType" class="control-label">Rodzaj paliwa</label>
+                @Html.DropDownListFor(model => model.FuelType, new SelectList(Enum.GetValues(typeof(FuelType)), FuelType.Benzyna), new { @class = "form-control" })
+                <span asp-validation-for="FuelType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Transmission" class="control-label">Skrzynia biegów</label>
+                @Html.DropDownListFor(model => model.Transmission, new SelectList(Enum.GetValues(typeof(TransmissionType)), TransmissionType.Automatyczna), new { @class = "form-control" })
+                <span asp-validation-for="Transmission" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BodyType" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Transmission, new SelectList(Enum.GetValues(typeof(BodyType)), BodyType.Sedan), new { @class = "form-control" })
+                <span asp-validation-for="BodyType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Drive" class="control-label">Napęd</label>
+                @Html.DropDownListFor(model => model.Drive, new SelectList(Enum.GetValues(typeof(Drive)), Drive.RWD), new { @class = "form-control" })
+                <span asp-validation-for="Drive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Acceleration" class="control-label">Przyspieszenie</label>
+                <input asp-for="Acceleration" class="form-control" type="number" />
+                <span asp-validation-for="Acceleration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VMax" class="control-label">Prędkość maksymalna</label>
+                <input asp-for="VMax" class="form-control" type="number" />
+                <span asp-validation-for="VMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DailyRate" class="control-label">Dzienna stawka</label>
+                <input asp-for="DailyRate" class="form-control" type="number" />
+                <span asp-validation-for="DailyRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Zdjęcie</label>
                 <input asp-for="Image" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Add Car</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </div>
         </form>
     </div>
 </div>
