@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<CarRentalStudio.Models.Car>
-
 @{
     ViewData["Title"] = "CarsMainPanel";
     var brands = ViewBag.Brands as List<string>;
@@ -14,23 +13,39 @@
         <button id="toggle-filter" class="filter-button">Filtruj</button>
         <div id="filter-dropdown" class="filter-dropdown" style="display: none; position: absolute;">
             <button id="clear-filters" class="clear-button">Wyczyść wszystkie</button>
+            <div id="price-filter">
+                <div class="filter-section">
+                    <button class="section-toggle">Cena</button>
+                    <div class="section-content" style="display: none;">
+                        <label for="price-min">Min:</label>
+                        <input type="number" id="price-min" class="price-input" placeholder="0" min="0">
+                        <label for="price-max">Max:</label>
+                        <input type="number" id="price-max" class="price-input" placeholder="2000" min="0">
+                    </div>
+                </div>
+            </div>
             <div id="brand-filters">
-                @if (brands != null && brands.Any())
-                {
-                    foreach (var brand in brands)
-                    {
-                        <div class="brand-filter-item">
-                            <label>
-                                <input type="checkbox" value="@brand" class="brand-checkbox"> @brand
-                            </label>
-                        </div>
-                    }
-                }
+                <div class="filter-section">
+                    <button class="section-toggle" type="button">Marka</button>
+                    <div class="section-content" style="display: none;">
+                        @if (brands != null && brands.Any())
+                        {
+                            foreach (var brand in brands)
+                            {
+                                <div class="brand-filter-item">
+                                    <label>
+                                        <input type="checkbox" value="@brand" class="brand-checkbox"> @brand
+                                    </label>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="car-count">
-        <p>Samochody (@Model.Count())</p>
+        <p id="car-count">Samochody (@Model.Count())</p>
     </div>
     <div class="sort-options">
         <label for="sort">Sortuj według ceny:</label>
@@ -88,23 +103,47 @@
         const isHidden = dropdown.style.display === 'none';
         dropdown.style.display = isHidden ? 'block' : 'none';
     });
+    document.querySelectorAll('.section-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function () {
+            const content = this.nextElementSibling;
+            const isHidden = content.style.display === 'none';
+        content.style.display = isHidden ? 'block' : 'none';
+        });
+    });
 
     // Filter cars by brand
     document.getElementById('brand-filters').addEventListener('change', function () {
-        const selectedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value.toLowerCase());
-        const cars = document.querySelectorAll('.car-tile');
+        applyFilters();
+    });
 
-        cars.forEach(car => {
-            const carBrand = car.getAttribute('data-brand').toLowerCase();
-            car.style.display = selectedBrands.length === 0 || selectedBrands.includes(carBrand) ? 'block' : 'none';
-        });
+    // Filter cars by price
+    document.getElementById('price-filter').addEventListener('input', function () {
+        applyFilters();
     });
 
     // Clear all filters
     document.getElementById('clear-filters').addEventListener('click', function () {
         document.querySelectorAll('.brand-checkbox').forEach(cb => cb.checked = false);
-        document.querySelectorAll('.car-tile').forEach(car => car.style.display = 'block');
+        document.querySelectorAll('.price-input').forEach(input => input.value = '');
+        applyFilters();
     });
+
+    function applyFilters() {
+        const selectedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value.toLowerCase());
+        const priceMin = parseFloat(document.getElementById('price-min').value) || 0;
+        const priceMax = parseFloat(document.getElementById('price-max').value) || Infinity;
+        const cars = document.querySelectorAll('.car-tile');
+
+        cars.forEach(car => {
+            const carBrand = car.getAttribute('data-brand').toLowerCase();
+            const carPrice = parseFloat(car.getAttribute('data-price'));
+
+            const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(carBrand);
+            const matchesPrice = carPrice >= priceMin && carPrice <= priceMax;
+
+            car.style.display = matchesBrand && matchesPrice ? 'block' : 'none';
+        });
+    }
 </script>
 
 

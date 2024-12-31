@@ -52,11 +52,30 @@ namespace CarRentalStudio.Controllers
             return View(Car);
         }
 
-        public async Task<IActionResult> CarsMainPanel()
+        public async Task<IActionResult> CarsMainPanel(decimal? minPrice, decimal? maxPrice, List<string> brands)
         {
-            var cars = await _context.Cars.ToListAsync();
-            var brands = cars.Select(c => c.Brand).Distinct().ToList(); // Pobieranie unikalnych marek
-            ViewBag.Brands = brands; // Przekazanie do widoku
+            var carsQuery = _context.Cars.AsQueryable();
+
+            // Filtrowanie po marce
+            if (brands != null && brands.Any())
+            {
+                carsQuery = carsQuery.Where(c => brands.Contains(c.Brand));
+            }
+
+            // Filtrowanie po cenie
+            if (minPrice.HasValue)
+            {
+                carsQuery = carsQuery.Where(c => c.DailyRate >= minPrice.Value);
+            }
+            if (maxPrice.HasValue)
+            {
+                carsQuery = carsQuery.Where(c => c.DailyRate <= maxPrice.Value);
+            }
+
+            var cars = await carsQuery.ToListAsync();
+            // Pobierz wszystkie unikalne marki do ViewBag
+            var allBrands = await _context.Cars.Select(c => c.Brand).Distinct().ToListAsync();
+            ViewBag.Brands = allBrands;
             return View(cars);
         }
 

@@ -936,10 +936,32 @@ nav ul {
     display: block;
 }
 
+.filter-section {
+    margin-bottom: 15px;
+}
+
+.section-toggle {
+    cursor: pointer;
+    font-weight: bold;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 5px 0;
+    display: block;
+}
+
+.section-content {
+    margin-top: 5px;
+}
+
 .brand-filter-item {
     margin-bottom: 5px;
 }
 
+.price-input {
+    width: 80px;
+    margin-right: 10px;
+}
 .car-count {
     display: flex;
     align-items: center;
