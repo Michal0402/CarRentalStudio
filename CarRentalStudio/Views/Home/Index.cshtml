@@ -138,70 +138,76 @@
 
     </div>
 </div>
-<div class="Opinie">
-    <h2>Oceny</h2>
-
-    <!-- Formularz dodawania oceny -->
-    <h3>Dodaj swoją ocenę</h3>
-    <form method="post" asp-action="AddRating">
-        <div class="form-group">
-            <label for="Title">Tytuł</label>
-            <input type="text" name="Title" class="form-control" required />
-        </div>
-        <div class="form-group">
-            <label for="Description">Opis</label>
-            <textarea name="Description" class="form-control" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="Mark">Ocena</label>
-            <select name="Mark" class="form-control" required>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Dodaj ocenę</button>
-    </form>
-
-    <hr>
-
-    <h3>Opinie użytkowników</h3>
-    <ul>
-       @if (Model == null || !Model.Any())
-        {
-           
-        }
-        else
-        {
-            foreach (var rating in Model)
+<div class="Opinie" style="display: flex; gap: 20px;">
+    <!-- Sekcja wyświetlania opinii -->
+    <div class="opinie-lista" style="flex: 1; height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+        <h3>Opinie użytkowników</h3>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+            @if (Model == null || !Model.Any())
             {
-                if (rating == null)
+                <p>Brak opinii do wyświetlenia.</p>
+            }
+            else
+            {
+                foreach (var rating in Model)
                 {
-                   
-                }
-                else if (rating.User == null)
-                {
-                
-                }
-                else
-                {
-                    <li>
-                        <strong>@rating.Title</strong> (Ocena: @rating.Mark)<br />
-                        @rating.Description<br />
-                        <em>Ocenił: @rating.User.UserName</em>
-                    </li>
+                    if (rating?.User == null)
+                    {
+                        <p>Nieprawidłowe dane opinii.</p>
+                    }
+                    else
+                    {
+                        <li style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #ddd;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                <!-- Gwiazdki oceny -->
+                                <div style="color: gold;">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= rating.Mark)
+                                        {
+                                            <span>★</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: #ddd;">★</span>
+                                        }
+                                    }
+                                </div>
+                                <strong>@rating.Title</strong>
+                            </div>
+                            <p>@rating.Description</p>
+                            <em>Ocenił: @rating.User.UserName</em>
+                        </li>
+                    }
                 }
             }
-        }
-        @* @foreach (var rating in Model)
-        {
-            <li>
-                <strong>@rating.Title</strong> (Ocena: @rating.Mark)<br />
-                @rating.Description<br />
-                <em>Ocenił: @rating.User.UserName</em>
-            </li>
-        } *@
-    </ul>
+        </ul>
+    </div>
+
+    <!-- Sekcja formularza dodawania opinii -->
+    <div class="formularz-opinii" style="flex: 1; border: 1px solid #ccc; padding: 10px;">
+        <h3>Dodaj swoją ocenę</h3>
+        <form method="post" asp-action="AddRating">
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label for="Title">Tytuł</label>
+                <input type="text" name="Title" class="form-control" required style="width: 100%;" />
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label for="Description">Opis</label>
+                <textarea name="Description" class="form-control" required style="width: 100%; height: 100px;"></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label for="Mark">Ocena</label>
+                <select name="Mark" class="form-control" required style="width: 100%;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Dodaj ocenę</button>
+        </form>
+    </div>
 </div>
+
