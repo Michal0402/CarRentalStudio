@@ -36,6 +36,11 @@ namespace CarRentalStudio.Data
                 new Car { Id= 9, Brand = "Mercedes-Benz", Model = "S400d Long", Year = 2024, Mileage = 1000, HorsePower = 330, Torque = 700, EngineCapacity = 3, FuelType = FuelType.Diesel, Transmission = TransmissionType.Automatyczna, BodyType = BodyType.Sedan, Drive = Drive.AWD, Acceleration = 5.4, VMax = 250, DailyRate=650,Image= "https://cylindersi.pl/wp-content/uploads/2023/04/S-Klasa-5-sylwetka.jpg"},
                 new Car { Id= 10, Brand = "BMW", Model = "G70 740d xDrive", Year = 2024, Mileage = 1000, HorsePower = 340, Torque = 700, EngineCapacity = 3, FuelType = FuelType.Diesel, Transmission = TransmissionType.Automatyczna, BodyType = BodyType.Sedan, Drive = Drive.AWD, Acceleration = 5.0, VMax = 250, DailyRate=615,Image= "https://cylindersi.pl/wp-content/uploads/2023/05/BMW-740D-xDrive-Sylwetka.jpg"}
                 );
+            modelBuilder.Entity<Rating>()
+        .HasOne(r => r.User)
+        .WithMany() // Jeśli użytkownik może mieć wiele opinii
+        .HasForeignKey(r => r.UserId)
+        .OnDelete(DeleteBehavior.Cascade);
             Console.WriteLine("OnModelCreating was called!");
         }
     }

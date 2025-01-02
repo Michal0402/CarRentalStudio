@@ -128,11 +128,13 @@
         applyFilters();
     });
 
-    function applyFilters() {
+       function applyFilters() {
         const selectedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(cb => cb.value.toLowerCase());
         const priceMin = parseFloat(document.getElementById('price-min').value) || 0;
         const priceMax = parseFloat(document.getElementById('price-max').value) || Infinity;
         const cars = document.querySelectorAll('.car-tile');
+
+        let visibleCount = 0;
 
         cars.forEach(car => {
             const carBrand = car.getAttribute('data-brand').toLowerCase();
@@ -141,8 +143,14 @@
             const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(carBrand);
             const matchesPrice = carPrice >= priceMin && carPrice <= priceMax;
 
-            car.style.display = matchesBrand && matchesPrice ? 'block' : 'none';
+            const isVisible = matchesBrand && matchesPrice;
+            car.style.display = isVisible ? 'block' : 'none';
+
+            if (isVisible) visibleCount++;
         });
+
+        // Aktualizuj licznik samochodów
+        document.getElementById('car-count').textContent = `Samochody (${visibleCount})`;
     }
 </script>
 

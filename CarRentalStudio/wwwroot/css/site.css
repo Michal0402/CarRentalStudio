@@ -982,6 +982,32 @@ label {
     font-size: 14px;
     color: #333;
 }
+.reviews-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.reviews-list {
+    width: 45%;
+    overflow-y: auto;
+    max-height: 400px;
+}
+.review-item {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.review-form {
+    width: 45%;
+}
+
+    .review-form textarea {
+        width: 100%;
+    }
+
 
 
 

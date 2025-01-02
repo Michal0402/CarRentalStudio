@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarRentalStudio.Data;
 using CarRentalStudio.Models;
+using System.Security.Claims;
 
 namespace CarRentalStudio.Controllers
 {
@@ -22,8 +23,7 @@ namespace CarRentalStudio.Controllers
         // GET: Rating
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Rating.Include(r => r.User);
-            return View(await applicationDbContext.ToListAsync());
+            return View();
         }
 
         // GET: Rating/Details/5
@@ -57,15 +57,13 @@ namespace CarRentalStudio.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Mark,UserId")] Rating rating)
+        public async Task<IActionResult> AddRating(Rating rating)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(rating);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", rating.UserId);
             return View(rating);
         }
 

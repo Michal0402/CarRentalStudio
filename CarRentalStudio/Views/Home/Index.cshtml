@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<CarRentalStudio.Models.Rating>
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -136,4 +137,46 @@
         </div>
 
     </div>
+</div>
+<div class="Opinie">
+    <h2>Oceny</h2>
+
+    <!-- Formularz dodawania oceny -->
+    <h3>Dodaj swoją ocenę</h3>
+    <form method="post" asp-action="AddRating">
+        <div class="form-group">
+            <label for="Title">Tytuł</label>
+            <input type="text" name="Title" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="Description">Opis</label>
+            <textarea name="Description" class="form-control" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="Mark">Ocena</label>
+            <select name="Mark" class="form-control" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Dodaj ocenę</button>
+    </form>
+
+    <hr>
+
+    <h3>Opinie użytkowników</h3>
+    <ul>
+
+        @foreach (var rating in Model)
+        {
+            <li>
+                <strong>@rating.Title</strong> (Ocena: @rating.Mark)<br />
+                @rating.Description<br />
+                <em>Ocenił: @rating.User.UserName</em>
+            </li>
+        }
+    </ul>
 </div>
