@@ -169,14 +169,39 @@
 
     <h3>Opinie użytkowników</h3>
     <ul>
-
-        @foreach (var rating in Model)
+       @if (Model == null || !Model.Any())
+        {
+           
+        }
+        else
+        {
+            foreach (var rating in Model)
+            {
+                if (rating == null)
+                {
+                   
+                }
+                else if (rating.User == null)
+                {
+                
+                }
+                else
+                {
+                    <li>
+                        <strong>@rating.Title</strong> (Ocena: @rating.Mark)<br />
+                        @rating.Description<br />
+                        <em>Ocenił: @rating.User.UserName</em>
+                    </li>
+                }
+            }
+        }
+        @* @foreach (var rating in Model)
         {
             <li>
                 <strong>@rating.Title</strong> (Ocena: @rating.Mark)<br />
                 @rating.Description<br />
                 <em>Ocenił: @rating.User.UserName</em>
             </li>
-        }
+        } *@
     </ul>
 </div>

@@ -22,7 +22,7 @@ namespace CarRentalStudio.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var ratings = _context.Rating
             .Include(r => r.User) // £adowanie danych u¿ytkownika
