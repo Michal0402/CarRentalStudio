@@ -3,7 +3,7 @@
 <div class="rental-confirmation">
     <h2>Potwierdzenie rezerwacji</h2>
 
-    <div class="car-details">
+    <div class="rental-car-spec">
         <h3>Dane samochodu</h3>
         <p><strong>Marka:</strong> @Model.CarBrand</p>
         <p><strong>Model:</strong> @Model.CarModel</p>
@@ -21,7 +21,7 @@
         <p><strong>Do zapłaty:</strong> @Model.TotalPrice.ToString("C")</p>
     </div>
 
-    <<form method="post" asp-action="FinalizeOrder">
+    <form method="post" asp-action="FinalizeOrder">
         <input type="hidden" asp-for="StartDate" />
         <input type="hidden" asp-for="EndDate" />
         <input type="hidden" asp-for="CarId" />

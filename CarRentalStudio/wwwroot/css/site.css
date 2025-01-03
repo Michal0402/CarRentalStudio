@@ -6,17 +6,23 @@ body {
     flex-direction: column;
     background: linear-gradient(138deg, rgba(0,0,0,1) 18%, rgba(75,81,87,1) 41%, rgba(92,126,159,1) 57%, rgba(81, 150, 219, 0.808) 76%, rgba(0, 118, 235, 0.637) 98%);
     font-family: 'Roboto', 'Arial';
-    text-shadow: 5px 4px 6px rgba(66, 68, 90, 1);
 }
 
 .row {
+    margin: 20px;
     background-color: white;
+    padding: 10px 0;
+    border-radius: 20px;
+}
+
+.col-md-9{
+    background: white;
+    border-radius: 20px;
 }
 
 .table {
     background-color: white;
 }
-
 
 @media (min-width: 768px) {
   html {
@@ -517,7 +523,7 @@ nav ul {
     }
 
     .howItWorksPanel p {
-        font-size: 1rem;
+        font-size: 0.9vw;
         text-align: justify;
         position: flex;
         top: -30%;
@@ -878,7 +884,7 @@ nav ul {
     .contentJakToDziala-content p {
         color: white;
         text-align: justify;
-        font-size: 1.25rem;
+        font-size: 1vw;
         text-shadow: 5px 4px 6px rgba(66, 68, 90, 1);
         
     }
@@ -896,11 +902,14 @@ nav ul {
 .header {
     text-align: center;
     margin-bottom: 20px;
+    color: rgb(141, 198, 255);
 }
 .filter-panel {
     background-color: white;
     height: 50px;
-    margin: 20px 0;
+    margin: 20px 20px;
+    padding: 10px;
+    border-radius: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between; /* Rozk³ad elementów na lewo i prawo */
@@ -967,6 +976,11 @@ nav ul {
     align-items: center;
     gap: 10px;
 }
+
+#car-count{
+    position: relative;
+    bottom: -7px;
+}
 .sort-options {
     display: flex;
     align-items: center;
@@ -1004,9 +1018,58 @@ label {
     width: 45%;
 }
 
-    .review-form textarea {
-        width: 100%;
+.review-form textarea {
+    width: 100%;
+}
+
+.rental-confirmation {
+    margin: 10px auto;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rental-confirmation h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+    .rental-confirmation h3 {
+        color: #258cfb;
     }
+
+.rental-car-spec, .rental-dates, .total-price {
+    margin-bottom: 20px;
+}
+
+.rental-confirmation p {
+    margin: 5px 0;
+    color: #fff;
+}
+
+.rental-confirmation button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .rental-confirmation button:hover {
+        background-color: #0056b3;
+    }
+
+#dataContainer{
+    margin: 10px;
+}
+
 
 
 

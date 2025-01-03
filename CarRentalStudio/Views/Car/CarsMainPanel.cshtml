@@ -67,7 +67,7 @@
                 <div class="detail"><img src="~/images/icons/acceleration.svg" alt="">@car.Acceleration s do 100km/h</div>
                 <div class="detail"><img src="~/images/icons/gearshift.png" alt="">@car.Transmission</div>
                 <div class="detail"><img src="~/images/icons/power.svg" alt="">@car.HorsePower KM / @car.Torque NM</div>
-                <div class="detail"><i class="fa-solid fa-gas-pump"></i>@car.FuelType</div>
+                <div class="detail"><img src="~/images/icons/capacity.svg">@car.BodyType</div>
             </div>
             <a href="@Url.Action("Details", new { id = car.Id })" class="details-button">Zobacz szczegóły</a>
         </div>
