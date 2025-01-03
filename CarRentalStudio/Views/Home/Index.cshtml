@@ -12,7 +12,7 @@
             <div class="dropdownContent">
                 <a href="">klasa A</a>
                 <a href="">klasa C</a>
-                <a href="http://127.0.0.1:5500/mercedesS400d.html">klasa S</a>
+                <a href="">klasa S</a>
                 <a href="">klasa G</a>
                 <a href="">Amg GT</a>
             </div>
@@ -41,7 +41,7 @@
 
     <div class="content-child">
         <div class="card" id="aventadorCard">
-            <img src="images/Aventador (Średni).jpg" class="card-img">
+            <img src="~/images/Aventador (Średni).jpg" class="card-img">
             <div class="card-body">
                 <h1 class="card-tittle" id="aventador-card-tittle">LAMBORGINI</h1>
                 <p class="card-sub-tiitle">AVENTADOR SVJ</p>
@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="card" id="urusCard">
-            <img src="images/Urus (Średni).jpg" class="card-img">
+            <img src="~/images/Urus (Średni).jpg" class="card-img">
             <div class="card-body" id="lamboAventador-info">
                 <h1 class="card-tittle" id="urus-card-tittle">LAMBORGINI</h1>
                 <p class="card-sub-tiitle">URUS</p>
@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="card" id="porscheCard">
-            <img src="images/Porsche (Średni).jpg" class="card-img">
+            <img src="~/images/Porsche (Średni).jpg" class="card-img">
             <div class="card-body" id="urus-card-body">
                 <h1 class="card-tittle" id="porsche-card-tittle">PORSCHE</h1>
                 <p class="card-sub-tiitle">911 GT2 RS</p>
@@ -71,17 +71,17 @@
     <div class="howItWorksHeader"><h1>Jak To Działa?</h1></div>
     <div class="howItWorksCards">
         <div class="howItWorksCards-iteam" id="card1">
-            <img src="images/jaktodziala1.svg">
+            <img src="~/images/jaktodziala1.svg">
             <h2>Wypełnij formularz online</h2>
             <p>Zarezerwuj swój samochód w Panelu Rezerwacyjnym, zadzwoń, napisz maila lub skontaktuj się z nami poprzez social media – zależnie, która metoda jest dla Ciebie najwygodniejsza. Złożenie rezerwacji zajmie Ci najwyżej kilka minut.</p>
         </div>
         <div class="howItWorksCards-iteam" id="card2">
-            <img src="images/jaktodziala2.svg">
+            <img src="~/images/jaktodziala2.svg">
             <h2>Poczekaj na potwierdzenie</h2>
             <p>Teraz potwierdzamy rezerwację i przygotowujemy Twój samochód. Daj nam chwilę – właśnie dokładamy wszelkich starań, aby każdy detal zachwycał Cię swoją perfekcją przez całą podróż. Powinieneś otrzymać wiadomość e-mail z informacją o zatwierdzeniu rezerwacji.</p>
         </div>
         <div class="howItWorksCards-iteam" id="card3">
-            <img src="images/jaktodziala3.svg">
+            <img src="~/images/jaktodziala3.svg">
             <h2>Odbierz auto i ruszaj w drogę</h2>
             <p>Wszystko gotowe. Wsiadaj i jedź, dokąd tylko pragniesz. Delektuj się tym doświadczeniem – jest niepowtarzalne.</p>
         </div>
@@ -185,7 +185,7 @@
     </div>
 
     <!-- Sekcja formularza dodawania opinii -->
-    <div class="formularz-opinii" style="flex: 1; border: 1px solid #ccc; padding: 10px;">
+    <div id="formularz-opinii" class="formularz-opinii" style="flex: 1; border: 1px solid #ccc; padding: 10px;">
         <h3>Dodaj swoją ocenę</h3>
         <form method="post" asp-action="AddRating">
             <div class="form-group" style="margin-bottom: 10px;">
@@ -208,6 +208,13 @@
             </div>
             <button type="submit" class="btn btn-primary" style="width: 100%;">Dodaj ocenę</button>
         </form>
+        <br />
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-warning">
+                @TempData["Message"]
+            </div>
+        }
     </div>
 </div>
 

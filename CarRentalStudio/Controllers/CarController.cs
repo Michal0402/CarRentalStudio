@@ -21,6 +21,7 @@ namespace CarRentalStudio.Controllers
             _context = context;
         }
         [HttpGet]
+        
         public IActionResult GetUnavailableDates(int carId)
         {
             var car = _context.Cars.Include(c => c.Rentals).FirstOrDefault(c => c.Id == carId);
@@ -39,7 +40,9 @@ namespace CarRentalStudio.Controllers
 
             return Json(unavailableDates);
         }
+
         // GET: Car/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

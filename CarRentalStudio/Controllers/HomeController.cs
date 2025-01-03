@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace CarRentalStudio.Controllers
@@ -34,6 +35,14 @@ namespace CarRentalStudio.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddRating(Rating rating)
         {
+            // SprawdŸ, czy u¿ytkownik jest zalogowany
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["Message"] = "Musisz siê zalogowaæ, aby dodaæ opiniê.";
+
+                return Redirect("Index#formularz-opinii");
+            }
+
             if (ModelState.IsValid)
             {
                 // Pobierz ID zalogowanego u¿ytkownika
@@ -58,8 +67,8 @@ namespace CarRentalStudio.Controllers
                 _context.Rating.Add(rating);
                 _context.SaveChanges();
 
-
-                return RedirectToAction(nameof(Index));
+                return Redirect("Index#formularz-opinii");
+                //return RedirectToAction(nameof(Index));
             }
             else
             {
